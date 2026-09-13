@@ -1,3 +1,31 @@
 tiny-imagenet-200/*
-__pycache__/callbacks.cpython-38.pyc
-__pycache__/utils.cpython-38.pyc
+
+# Python caches and generated files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter and test tooling
+.ipynb_checkpoints/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Packaging artifacts
+build/
+dist/
+*.egg-info/
+
+# Local editor and operating system files
+.DS_Store
+.vscode/
+
+#train_data
+tiny-imagenet-200/*

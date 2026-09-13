@@ -1,196 +1,93 @@
-# ConvMixer on Tiny ImageNet
+# ResNet Attention Experiments on Tiny ImageNet
 
-This notebook demonstrates the training and evaluation of a **ConvMixer** model on the **Tiny ImageNet** dataset. The goal is to provide a clear, minimal, and reproducible baseline for convolution-only architectures that rely on aggressive spatial mixing rather than attention mechanisms.
+This repository provides a reproducible training pipeline for comparing a small ResNet-style image classifier with three attention configurations:
 
----
+- **Baseline**: no attention block
+- **SE**: squeeze-and-excitation channel attention
+- **CBAM**: channel and spatial attention
 
-## 1. Tiny ImageNet Dataset
+The experiments use the Tiny ImageNet dataset with a shared data pipeline, augmentation settings, optimizer, loss, learning-rate schedule, and evaluation procedure. This keeps comparisons between model variants consistent.
 
-### Overview
+## Dataset
 
-Tiny ImageNet is a reduced version of the ImageNet dataset designed for fast experimentation while retaining realistic visual complexity.
+Download and extract Tiny ImageNet so the repository contains:
 
-**Key properties:**
-
-* **200 classes**
-* **100,000 training images** (500 per class)
-* **10,000 validation images** (50 per class)
-* **Image resolution:** `64 × 64 × 3`
-
-Official source:
-
-```
-http://cs231n.stanford.edu/tiny-imagenet-200.zip
-```
-
----
-
-### Directory structure
-
-After downloading and extracting, the dataset should have the following layout:
-
-```
+```text
 tiny-imagenet-200/
 ├── train/
-│   ├── <class_id>/
-│   │   ├── images/
-│   │   └── *.txt
-│   └── ... (200 classes)
 ├── val/
-│   ├── images/
-│   └── val_annotations.txt
-├── test/
-│   └── images/
 ├── wnids.txt
 └── words.txt
 ```
 
-* `wnids.txt` lists the class identifiers
-* `words.txt` maps identifiers to human-readable labels
-* Validation labels are provided via `val_annotations.txt`
+The dataset contains 200 classes with 64 x 64 RGB images. The local dataset directory is ignored by Git because it is input data rather than source code.
 
----
+## Running experiments
 
-## 2. ConvMixer Notebook
+The recommended entry point runs three repetitions for each model by default:
 
-### Notebook: `ConvMixer.ipynb`
-
-This notebook implements a **ConvMixer** architecture and trains it on Tiny ImageNet. ConvMixer is a convolution-only model that separates **spatial mixing** and **channel mixing** using depthwise and pointwise convolutions.
-
----
-
-### Core architectural ideas
-
-ConvMixer blocks follow a simple but effective pattern. I have adjusted the core architecture to achieve maximum performance while having few parameters
-and speed.
-
-1. **Conv Stem** via 5x5 strided convolution
-2. **Depthwise convolution + Axial Depthwise convolution** for spatial mixing
-3. **Pointwise (1×1) convolution** for channel mixing
-4. **Residual connections** for stability
-
-This design:
-
-* Avoids attention entirely
-* Preserves strong locality bias
-* Scales well with depth
-* Has 3 different stages
-
----
-
-### High-level model structure
-
-```
-Input (64×64)
-  ↓
-Conv Stem 5x5 (Conv with stride 2)
-  ↓
-Stage 1: [ConvMixer Block (depthwise)] × N
-  ↓
-GroupConv 5x5 (Conv with stride 2)
-  ↓
-Stage 2: [ConvMixer Block (depthwise + axial depthwise)] × N
-  ↓
-GroupConv 5x5 (Conv with stride 2)
-  ↓
-Stage 3: [ConvMixer Block (axial depthwise)] × N
-  ↓
-Global Average Pooling
-  ↓
-Linear Classifier (200 classes)
+```bash
+python3 run_experiments.py
 ```
 
-Each ConvMixer block consists of:
+This runs the baseline, SE, and CBAM models for three runs each. To choose the number of repetitions or models:
 
-* Depthwise and/or Axial depthwise convolution (large kernel)
-* GELU activation
-* Batch normalization
-* Residual
-* Pointwise convolution
+```bash
+python3 run_experiments.py --runs 5
+python3 run_experiments.py --runs 3 --models baseline se cbam
+python3 run_experiments.py --runs 1 --models cbam
+```
 
----
+Each model is trained for 100 epochs by default. A new model is created for each run, and the previous TensorFlow session is cleared before the next model is built.
 
-## 3. Training setup
+Individual model entry points are also available:
 
-The notebook typically includes:
+```bash
+python3 run_baseline.py
+python3 run_se.py
+python3 run_cbam.py
+```
 
-* Standard image preprocessing and normalization
-* Data loading from Tiny ImageNet directory structure
-* Cross-entropy loss for multi-class classification
-* Adam or AdamW optimizer
+## Results
 
-Training Tiny ImageNet allows:
+Each completed run is saved under `results/<run-name>/`, including:
 
-* Rapid iteration
-* Clear comparison across architectural variants
-* Evaluation of spatial inductive biases
+- experiment and environment settings
+- model configuration and summary
+- epoch-by-epoch training logs
+- training history and final evaluation metrics
+- best and final Keras model files
 
----
+The multi-run script also creates:
 
-## 4. Why ConvMixer + Tiny ImageNet?
+```text
+results/comparison.json
+results/comparison.csv
+```
 
-This combination is useful because:
+These files contain the metrics for every model and repetition, including best validation accuracy, final validation accuracy, and evaluation accuracy.
 
-* ConvMixer benefits from **mid-scale spatial structure**
-* Tiny ImageNet images are small enough to train quickly
-* Results are more meaningful than CIFAR but cheaper than ImageNet
+To plot completed runs:
 
-The notebook serves as a **baseline** for later architectural extensions (e.g. spatial shuffling, patch unfolding, wavelet mixing).
+```bash
+python3 visualize_results.py
+python3 visualize_results.py baseline_run_01 se_run_01 cbam_run_01 \
+    --output results/comparison.png
+```
 
----
+## Project structure
 
-## 5. Running the notebook
+```text
+experiment_config.py   Shared training configuration
+data_pipeline.py       Tiny ImageNet loading and augmentation
+model_factory.py       ResNet, SE, and CBAM model construction
+experiment_runner.py   Shared training and evaluation logic
+run_experiments.py     Repeated multi-model experiment runner
+run_baseline.py        Baseline convenience entry point
+run_se.py              SE convenience entry point
+run_cbam.py            CBAM convenience entry point
+visualize_results.py   Result loading and plotting
+callbacks.py           Learning-rate scheduling callback
+```
 
-### Requirements
-
-* Python 3.9+
-* TensorFlow 2.x
-* NumPy
-* Matplotlib
-
-Optional:
-
-* GPU for faster training
-
----
-
-### Dataset setup
-
-1. Download Tiny ImageNet:
-
-   ```bash
-   wget http://cs231n.stanford.edu/tiny-imagenet-200.zip
-   unzip tiny-imagenet-200.zip
-   ```
-
-2. Ensure the dataset path in the notebook matches your local setup.
-
----
-
-## 6. Scope and limitations
-
-This notebook is intended to:
-
-* Provide a clean adapted ConvMixer reference implementation
-* Serve as a comparison point for more experimental models
-* I have not found a model with fewer parameters (2.6M) having higher validation accuarcy (~63%) than this (01.02.2026).
-
----
-
-## 7. Possible extensions
-
-* Replace patch embedding with lossless spatial shuffling
-* Compare against pooling-based CNNs
-* Analyze kernel size vs performance
-* Extend to dense prediction tasks
-
----
-
-## 8. Attribution
-
-* Tiny ImageNet dataset: Stanford CS231n
-* ConvMixer architecture: Trockman & Kolter (2022)
-
----
-
-**This notebook is best viewed as a strong convolutional baseline and a stepping stone toward more structured spatial mixing architectures.**
+The older ConvMixer notebook and its supporting utilities are retained separately as historical research material and are not part of the current ResNet experiment pipeline.
