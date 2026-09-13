@@ -14,6 +14,7 @@ MODEL_ATTENTION = {
     "baseline": "none",
     "se": "se",
     "cbam": "cbam",
+    "axial": "axial",
 }
 
 
@@ -98,7 +99,7 @@ def run_experiments(number_of_runs, model_names, base_seed, results_dir):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Run repeated ResNet comparisons for baseline, SE, and CBAM models."
+        description="Run repeated ResNet comparisons for baseline, SE, CBAM, and axial models."
     )
     parser.add_argument("--runs", type=int, default=3, help="Number of runs per model.")
     parser.add_argument(
@@ -106,7 +107,7 @@ def parse_args():
         nargs="+",
         choices=sorted(MODEL_ATTENTION),
         default=list(MODEL_ATTENTION),
-        help="Models to compare (default: baseline se cbam).",
+        help="Models to compare (default: baseline se cbam axial).",
     )
     parser.add_argument("--seed", type=int, default=42, help="Seed for the first run.")
     parser.add_argument("--results-dir", default="results", help="Directory for run outputs.")

@@ -47,6 +47,26 @@ class SEBlock(layers.Layer):
         return x * s
 
 
+class AxialSpatialGate(layers.Layer):
+    def build(self, input_shape):
+        height, width = input_shape[1:3]
+        if height is None or width is None:
+            raise ValueError("AxialSpatialGate requires known spatial dimensions")
+        self.vertical = layers.DepthwiseConv2D(
+            (height, 1), padding="valid", use_bias=True
+        )
+        self.horizontal = layers.DepthwiseConv2D(
+            (1, width), padding="valid", use_bias=True
+        )
+        super().build(input_shape)
+
+    def call(self, inputs):
+        vertical_features = self.vertical(inputs)
+        horizontal_features = self.horizontal(inputs)
+        gate = tf.nn.sigmoid(vertical_features * horizontal_features)
+        return inputs * gate
+
+
 def _attention_block(channels, attention):
     if attention == "none":
         return None
@@ -54,7 +74,9 @@ def _attention_block(channels, attention):
         return SEBlock(channels, reduction=8)
     if attention == "cbam":
         return CBAM(channels)
-    raise ValueError("attention must be one of: none, se, cbam")
+    if attention == "axial":
+        return AxialSpatialGate()
+    raise ValueError("attention must be one of: none, se, cbam, axial")
 
 
 class ResidualBlock(layers.Layer):
@@ -98,7 +120,7 @@ def build_resnet(config):
     stem_channels = model_config["stem_channels"]
     stage_channels = model_config["stage_channels"]
     stage_depths = model_config["stage_depths"]
-    x = layers.Conv2D(stem_channels, 3, strides=1, padding="same", use_bias=False)(inputs)
+    x = layers.Conv2D(stem_channels, 5, strides=2, padding="same", use_bias=False)(inputs)
     x = layers.BatchNormalization()(x)
     x = layers.Activation("relu")(x)
 

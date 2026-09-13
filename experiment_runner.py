@@ -51,7 +51,13 @@ class ResNetExperiment:
         callbacks = [
             CosineAnnealingScheduler(config.base_lr, config.min_lr, config.epochs, config.warmup_epochs),
             keras.callbacks.CSVLogger(run_dir / "training_log.csv"),
-            keras.callbacks.ModelCheckpoint(run_dir / "best_model.keras", monitor="val_accuracy", mode="max", save_best_only=True),
+            keras.callbacks.ModelCheckpoint(
+                str(run_dir / "best_model.weights.h5"),
+                monitor="val_accuracy",
+                mode="max",
+                save_best_only=True,
+                save_weights_only=True,
+            ),
         ]
         history = model.fit(train_ds, epochs=config.epochs, validation_data=val_ds, callbacks=callbacks)
         evaluation = model.evaluate(val_ds, return_dict=True)

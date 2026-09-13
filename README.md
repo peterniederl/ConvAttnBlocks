@@ -1,10 +1,11 @@
 # ResNet Attention Experiments on Tiny ImageNet
 
-This repository provides a reproducible training pipeline for comparing a small ResNet-style image classifier with three attention configurations:
+This repository provides a reproducible training pipeline for comparing a small ResNet-style image classifier with four attention configurations:
 
 - **Baseline**: no attention block
 - **SE**: squeeze-and-excitation channel attention
 - **CBAM**: channel and spatial attention
+- **Axial**: depthwise height- and width-wise spatial attention
 
 The experiments use the Tiny ImageNet dataset with a shared data pipeline, augmentation settings, optimizer, loss, learning-rate schedule, and evaluation procedure. This keeps comparisons between model variants consistent.
 
@@ -34,7 +35,7 @@ This runs the baseline, SE, and CBAM models for three runs each. To choose the n
 
 ```bash
 python3 run_experiments.py --runs 5
-python3 run_experiments.py --runs 3 --models baseline se cbam
+python3 run_experiments.py --runs 3 --models baseline se cbam axial
 python3 run_experiments.py --runs 1 --models cbam
 ```
 
@@ -56,7 +57,7 @@ Each completed run is saved under `results/<run-name>/`, including:
 - model configuration and summary
 - epoch-by-epoch training logs
 - training history and final evaluation metrics
-- best and final Keras model files
+- best weights checkpoint and final Keras model file
 
 The multi-run script also creates:
 
