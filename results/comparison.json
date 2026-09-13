@@ -1,0 +1,14 @@
+[
+  {
+    "model": "baseline",
+    "run": 1,
+    "seed": 42,
+    "run_name": "baseline_run_01",
+    "best_val_accuracy": 0.618399977684021,
+    "best_val_loss": 1.6225062608718872,
+    "final_val_accuracy": 0.618399977684021,
+    "final_val_loss": 1.6225062608718872,
+    "evaluation_accuracy": 0.618399977684021,
+    "evaluation_loss": 1.6225062608718872
+  }
+]

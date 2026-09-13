@@ -14,7 +14,12 @@ MODEL_ATTENTION = {
     "baseline": "none",
     "se": "se",
     "cbam": "cbam",
-    "axial": "axial",
+    "axial_multiply": "axial_multiply",
+    "axial_multiply_pointwise": "axial_multiply_pointwise",
+    "axial_sum": "axial_sum",
+    "axial_sum_pointwise": "axial_sum_pointwise",
+    "axial_multiply_postpointwise": "axial_multiply_postpointwise",
+    "axial_sum_postpointwise": "axial_sum_postpointwise",
 }
 
 
@@ -76,10 +81,13 @@ def write_summary(results_dir, records):
         writer.writerows(records)
 
 
-def run_experiments(number_of_runs, model_names, base_seed, results_dir):
+def run_experiments(run_counts, model_names, base_seed, results_dir):
     records = []
-    for run_number in range(1, number_of_runs + 1):
+    maximum_runs = max(run_counts.values())
+    for run_number in range(1, maximum_runs + 1):
         for model_name in model_names:
+            if run_number > run_counts[model_name]:
+                continue
             seed = base_seed + run_number - 1
             run_name = f"{model_name}_run_{run_number:02d}"
             print(f"\nStarting {run_name} with seed {seed}")
@@ -97,17 +105,44 @@ def run_experiments(number_of_runs, model_names, base_seed, results_dir):
     return records
 
 
+def _parse_run_counts(run_specs, model_names):
+    run_counts = {model_name: 3 for model_name in model_names}
+    for run_spec in run_specs or []:
+        try:
+            model_name, count_text = run_spec.split("=", 1)
+            count = int(count_text)
+        except ValueError as error:
+            raise ValueError(
+                f"Invalid run specification {run_spec!r}; use MODEL=COUNT"
+            ) from error
+        if model_name not in MODEL_ATTENTION:
+            raise ValueError(f"Unknown model in --runs: {model_name}")
+        if model_name not in model_names:
+            raise ValueError(
+                f"Model {model_name!r} must also be selected with --models"
+            )
+        if count < 1:
+            raise ValueError(f"Run count for {model_name} must be at least 1")
+        run_counts[model_name] = count
+    return run_counts
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Run repeated ResNet comparisons for baseline, SE, CBAM, and axial models."
+        description="Run repeated ResNet comparisons for baseline, SE, CBAM, and axial variants."
     )
-    parser.add_argument("--runs", type=int, default=3, help="Number of runs per model.")
+    parser.add_argument(
+        "--runs",
+        nargs="+",
+        metavar="MODEL=COUNT",
+        help="Runs per model, for example baseline=2 axial_sum=5 (default: 3 each).",
+    )
     parser.add_argument(
         "--models",
         nargs="+",
         choices=sorted(MODEL_ATTENTION),
         default=list(MODEL_ATTENTION),
-        help="Models to compare (default: baseline se cbam axial).",
+        help="Models to compare (default: all registered models).",
     )
     parser.add_argument("--seed", type=int, default=42, help="Seed for the first run.")
     parser.add_argument("--results-dir", default="results", help="Directory for run outputs.")
@@ -116,9 +151,11 @@ def parse_args():
 
 def main():
     args = parse_args()
-    if args.runs < 1:
-        raise ValueError("--runs must be at least 1")
-    records = run_experiments(args.runs, args.models, args.seed, args.results_dir)
+    try:
+        run_counts = _parse_run_counts(args.runs, args.models)
+    except ValueError as error:
+        raise SystemExit(f"error: {error}") from error
+    records = run_experiments(run_counts, args.models, args.seed, args.results_dir)
     print(f"\nCompleted {len(records)} runs.")
     print(f"Comparison written to {Path(args.results_dir) / 'comparison.csv'}")
 

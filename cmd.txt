@@ -1,0 +1,12 @@
+python run_experiments.py \
+  --models axial_multiply_postpointwise axial_sum_postpointwise \
+  --runs axial_multiply_postpointwise=3 axial_sum_postpointwise=3
+
+python run_experiments.py \
+  --models baseline se cbam axial \
+  --runs baseline=2 se=3 cbam=3 axial=3 
+
+
+python run_experiments.py \
+  --models baseline se cbam axial_multiply axial_multiply_pointwise axial_sum axial_sum_pointwise axial_multiply_postpointwise axial_sum_postpointwise\
+  --runs baseline=2 se=3 cbam=3 axial_multiply=3 axial_multiply_pointwise=3 axial_sum=3 axial_sum_pointwise=3 axial_multiply_postpointwise=3 axial_sum_postpointwise=3

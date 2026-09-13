@@ -47,24 +47,85 @@ class SEBlock(layers.Layer):
         return x * s
 
 
-class AxialSpatialGate(layers.Layer):
+class _AxialSpatialGate(layers.Layer):
+    def __init__(self, fusion, use_pointwise=False, use_post_pointwise=False, **kwargs):
+        super().__init__(**kwargs)
+        self.fusion = fusion
+        self.use_pointwise = use_pointwise
+        self.use_post_pointwise = use_post_pointwise
+
     def build(self, input_shape):
         height, width = input_shape[1:3]
-        if height is None or width is None:
+        channels = input_shape[-1]
+        if height is None or width is None or channels is None:
             raise ValueError("AxialSpatialGate requires known spatial dimensions")
+        self.pointwise = (
+            layers.Conv2D(channels, 1, padding="same", use_bias=False)
+            if self.use_pointwise else None
+        )
         self.vertical = layers.DepthwiseConv2D(
-            (height, 1), padding="valid", use_bias=True
+            (height, 1), padding="valid", use_bias=False
         )
         self.horizontal = layers.DepthwiseConv2D(
-            (1, width), padding="valid", use_bias=True
+            (1, width), padding="valid", use_bias=False
         )
+        self.vertical_post_pointwise = (
+            layers.Conv2D(channels, 1, padding="same", use_bias=False)
+            if self.use_post_pointwise else None
+        )
+        self.horizontal_post_pointwise = (
+            layers.Conv2D(channels, 1, padding="same", use_bias=False)
+            if self.use_post_pointwise else None
+        )
+        self.vertical_norm = layers.LayerNormalization(axis=-1)
+        self.horizontal_norm = layers.LayerNormalization(axis=-1)
         super().build(input_shape)
 
     def call(self, inputs):
-        vertical_features = self.vertical(inputs)
-        horizontal_features = self.horizontal(inputs)
-        gate = tf.nn.sigmoid(vertical_features * horizontal_features)
+        projected = inputs if self.pointwise is None else self.pointwise(inputs)
+        vertical_features = self.vertical(projected)
+        horizontal_features = self.horizontal(projected)
+        if self.use_post_pointwise:
+            vertical_features = self.vertical_post_pointwise(vertical_features)
+            horizontal_features = self.horizontal_post_pointwise(horizontal_features)
+        vertical_features = self.vertical_norm(vertical_features)
+        horizontal_features = self.horizontal_norm(horizontal_features)
+        if self.fusion == "multiply":
+            fused = vertical_features * horizontal_features
+        else:
+            fused = vertical_features + horizontal_features
+        gate = tf.nn.sigmoid(fused)
         return inputs * gate
+
+
+class AxialSpatialGateMultiply(_AxialSpatialGate):
+    def __init__(self, **kwargs):
+        super().__init__(fusion="multiply", **kwargs)
+
+
+class AxialSpatialGateMultiplyPointwise(_AxialSpatialGate):
+    def __init__(self, **kwargs):
+        super().__init__(fusion="multiply", use_pointwise=True, **kwargs)
+
+
+class AxialSpatialGateSum(_AxialSpatialGate):
+    def __init__(self, **kwargs):
+        super().__init__(fusion="sum", **kwargs)
+
+
+class AxialSpatialGateSumPointwise(_AxialSpatialGate):
+    def __init__(self, **kwargs):
+        super().__init__(fusion="sum", use_pointwise=True, **kwargs)
+
+
+class AxialSpatialGateMultiplyPostPointwise(_AxialSpatialGate):
+    def __init__(self, **kwargs):
+        super().__init__(fusion="multiply", use_post_pointwise=True, **kwargs)
+
+
+class AxialSpatialGateSumPostPointwise(_AxialSpatialGate):
+    def __init__(self, **kwargs):
+        super().__init__(fusion="sum", use_post_pointwise=True, **kwargs)
 
 
 def _attention_block(channels, attention):
@@ -74,9 +135,23 @@ def _attention_block(channels, attention):
         return SEBlock(channels, reduction=8)
     if attention == "cbam":
         return CBAM(channels)
-    if attention == "axial":
-        return AxialSpatialGate()
-    raise ValueError("attention must be one of: none, se, cbam, axial")
+    if attention == "axial_multiply":
+        return AxialSpatialGateMultiply()
+    if attention == "axial_multiply_pointwise":
+        return AxialSpatialGateMultiplyPointwise()
+    if attention == "axial_sum":
+        return AxialSpatialGateSum()
+    if attention == "axial_sum_pointwise":
+        return AxialSpatialGateSumPointwise()
+    if attention == "axial_multiply_postpointwise":
+        return AxialSpatialGateMultiplyPostPointwise()
+    if attention == "axial_sum_postpointwise":
+        return AxialSpatialGateSumPostPointwise()
+    raise ValueError(
+        "attention must be one of: none, se, cbam, axial_multiply, "
+        "axial_multiply_pointwise, axial_sum, axial_sum_pointwise, "
+        "axial_multiply_postpointwise, axial_sum_postpointwise"
+    )
 
 
 class ResidualBlock(layers.Layer):
