@@ -1,13 +1,13 @@
 import json
 import platform
 import random
+import subprocess
 import sys
 from contextlib import redirect_stdout
 from pathlib import Path
 
 import numpy as np
 import tensorflow as tf
-import tensorflow_addons as tfa
 from tensorflow import keras
 
 from callbacks import CosineAnnealingScheduler
@@ -23,6 +23,50 @@ class ResNetExperiment:
 
     def build_model(self, config):
         return build_resnet(config)
+
+    def _generate_html_report(self, results_dir):
+        repo_root = Path(__file__).resolve().parent
+        report_path = Path(results_dir) / "comparison.html"
+        script_path = repo_root / "visualize_results.py"
+        subprocess.run(
+            ["python3", str(script_path), "--results-dir", str(results_dir), "--output", str(report_path)],
+            cwd=str(repo_root),
+            check=True,
+        )
+        return report_path
+
+    def _publish_results_to_github(self, results_dir):
+        repo_root = Path(__file__).resolve().parent
+        git_dir = repo_root / ".git"
+        if not git_dir.exists():
+            print("[publish] No git repository detected, skipping Git push.")
+            return False
+
+        files_to_stage = [
+            str(Path(results_dir) / "comparison.csv"),
+            str(Path(results_dir) / "comparison.json"),
+            str(Path(results_dir) / "comparison.html"),
+        ]
+
+        try:
+            subprocess.run(["git", "rev-parse", "--is-inside-work-tree"], cwd=str(repo_root), check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError:
+            print("[publish] Git repository is not valid, skipping Git push.")
+            return False
+
+        try:
+            subprocess.run(["git", "add", *files_to_stage], cwd=str(repo_root), check=True)
+            diff_status = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=str(repo_root), capture_output=True)
+            if diff_status.returncode == 0:
+                print("[publish] No new comparison artifacts to publish.")
+                return False
+            subprocess.run(["git", "commit", "-m", "Update experiment results"], cwd=str(repo_root), check=True)
+            subprocess.run(["git", "push", "origin", "HEAD"], cwd=str(repo_root), check=True)
+            print("[publish] Results and HTML report were pushed to GitHub.")
+            return True
+        except subprocess.CalledProcessError as exc:
+            print(f"[publish] Git publish failed: {exc}")
+            return False
 
     def run(self):
         config = self.config()
@@ -41,7 +85,7 @@ class ResNetExperiment:
 
         train_ds, val_ds = TinyImageNetData(config).datasets()
         model = self.build_model(config)
-        optimizer = tfa.optimizers.AdamW(learning_rate=config.base_lr, weight_decay=config.weight_decay, beta_1=config.beta_1, beta_2=config.beta_2)
+        optimizer = keras.optimizers.AdamW(learning_rate=config.base_lr, weight_decay=config.weight_decay, beta_1=config.beta_1, beta_2=config.beta_2)
         model.compile(optimizer=optimizer, loss=keras.losses.CategoricalCrossentropy(from_logits=True, label_smoothing=config.label_smoothing), metrics=["accuracy"])
         self._write_json(run_dir / "model_config.json", json.loads(model.to_json()))
         with (run_dir / "model_summary.txt").open("w") as summary_file:
@@ -64,6 +108,11 @@ class ResNetExperiment:
         self._write_json(run_dir / "history.json", history.history)
         self._write_json(run_dir / "evaluation.json", {key: float(value) for key, value in evaluation.items()})
         model.save(run_dir / "final_model.keras")
+
+        results_dir = Path(config.results_dir)
+        results_dir.mkdir(parents=True, exist_ok=True)
+        self._generate_html_report(results_dir)
+        self._publish_results_to_github(results_dir)
         return run_dir
 
     @staticmethod

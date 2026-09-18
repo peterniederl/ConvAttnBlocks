@@ -128,6 +128,162 @@ class AxialSpatialGateSumPostPointwise(_AxialSpatialGate):
         super().__init__(fusion="sum", use_post_pointwise=True, **kwargs)
 
 
+class AxialAvgPoolDualPathGate(layers.Layer):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.vertical_dw1 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.vertical_dw2 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.horizontal_dw1 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+        self.horizontal_dw2 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+
+    def call(self, inputs):
+        vertical_path = tf.reduce_mean(inputs, axis=2, keepdims=True)
+        vertical_path = self.vertical_dw1(vertical_path)
+        vertical_path = tf.nn.gelu(vertical_path)
+        vertical_path = self.vertical_dw2(vertical_path)
+
+        horizontal_path = tf.reduce_mean(inputs, axis=1, keepdims=True)
+        horizontal_path = self.horizontal_dw1(horizontal_path)
+        horizontal_path = tf.nn.gelu(horizontal_path)
+        horizontal_path = self.horizontal_dw2(horizontal_path)
+
+        fused = vertical_path + horizontal_path
+        gate = tf.nn.sigmoid(fused)
+        return inputs * gate
+
+
+class AxialAvgPoolDualPathGateSharedDescriptor(layers.Layer):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.vertical_dw1 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.vertical_dw2 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.horizontal_dw1 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+        self.horizontal_dw2 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+
+    def call(self, inputs):
+        vertical_path = tf.reduce_mean(inputs, axis=2, keepdims=True)
+        vertical_path = self.vertical_dw1(vertical_path)
+        vertical_path = tf.nn.gelu(vertical_path)
+        vertical_path = self.vertical_dw2(vertical_path)
+        vertical_path = tf.reduce_mean(vertical_path, axis=1, keepdims=True)
+
+        horizontal_path = tf.reduce_mean(inputs, axis=1, keepdims=True)
+        horizontal_path = self.horizontal_dw1(horizontal_path)
+        horizontal_path = tf.nn.gelu(horizontal_path)
+        horizontal_path = self.horizontal_dw2(horizontal_path)
+        horizontal_path = tf.reduce_mean(horizontal_path, axis=2, keepdims=True)
+
+        fused = vertical_path + horizontal_path
+        gate = tf.nn.sigmoid(fused)
+        return inputs * gate
+
+
+class AxialAvgPoolDualPathGateChannelMix(layers.Layer):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.vertical_dw1 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.vertical_dw2 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.horizontal_dw1 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+        self.horizontal_dw2 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+        self.channel_mix = None
+
+    def build(self, input_shape):
+        channels = input_shape[-1]
+        self.channel_mix = layers.Conv2D(channels, 1, padding="same", use_bias=False)
+        super().build(input_shape)
+
+    def call(self, inputs):
+        vertical_path = tf.reduce_mean(inputs, axis=2, keepdims=True)
+        vertical_path = self.vertical_dw1(vertical_path)
+        vertical_path = tf.nn.gelu(vertical_path)
+        vertical_path = self.vertical_dw2(vertical_path)
+        vertical_path = tf.reduce_mean(vertical_path, axis=1, keepdims=True)
+
+        horizontal_path = tf.reduce_mean(inputs, axis=1, keepdims=True)
+        horizontal_path = self.horizontal_dw1(horizontal_path)
+        horizontal_path = tf.nn.gelu(horizontal_path)
+        horizontal_path = self.horizontal_dw2(horizontal_path)
+        horizontal_path = tf.reduce_mean(horizontal_path, axis=2, keepdims=True)
+
+        fused = vertical_path + horizontal_path
+        fused = self.channel_mix(fused)
+        gate = tf.nn.sigmoid(fused)
+        return inputs * gate
+
+
+class AxialAvgPoolDualPathGateGlobalContext(layers.Layer):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.vertical_dw1 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.vertical_dw2 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.horizontal_dw1 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+        self.horizontal_dw2 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+        self.global_mix = None
+
+    def build(self, input_shape):
+        channels = input_shape[-1]
+        self.global_mix = layers.Conv2D(channels, 1, padding="same", use_bias=False)
+        super().build(input_shape)
+
+    def call(self, inputs):
+        vertical_path = tf.reduce_mean(inputs, axis=2, keepdims=True)
+        vertical_path = self.vertical_dw1(vertical_path)
+        vertical_path = tf.nn.gelu(vertical_path)
+        vertical_path = self.vertical_dw2(vertical_path)
+        vertical_path = tf.reduce_mean(vertical_path, axis=1, keepdims=True)
+
+        horizontal_path = tf.reduce_mean(inputs, axis=1, keepdims=True)
+        horizontal_path = self.horizontal_dw1(horizontal_path)
+        horizontal_path = tf.nn.gelu(horizontal_path)
+        horizontal_path = self.horizontal_dw2(horizontal_path)
+        horizontal_path = tf.reduce_mean(horizontal_path, axis=2, keepdims=True)
+
+        global_context = tf.reduce_mean(inputs, axis=[1, 2], keepdims=True)
+        global_context = self.global_mix(global_context)
+
+        fused = vertical_path + horizontal_path + global_context
+        gate = tf.nn.sigmoid(fused)
+        return inputs * gate
+
+
+class AxialAvgPoolDualPathGateFullExpressive(layers.Layer):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.vertical_dw1 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.vertical_dw2 = layers.DepthwiseConv2D((7, 1), padding="same", use_bias=False)
+        self.horizontal_dw1 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+        self.horizontal_dw2 = layers.DepthwiseConv2D((1, 7), padding="same", use_bias=False)
+        self.global_mix = None
+        self.channel_mix = None
+
+    def build(self, input_shape):
+        channels = input_shape[-1]
+        self.global_mix = layers.Conv2D(channels, 1, padding="same", use_bias=False)
+        self.channel_mix = layers.Conv2D(channels, 1, padding="same", use_bias=False)
+        super().build(input_shape)
+
+    def call(self, inputs):
+        vertical_path = tf.reduce_mean(inputs, axis=2, keepdims=True)
+        vertical_path = self.vertical_dw1(vertical_path)
+        vertical_path = tf.nn.gelu(vertical_path)
+        vertical_path = self.vertical_dw2(vertical_path)
+        vertical_path = tf.reduce_mean(vertical_path, axis=1, keepdims=True)
+
+        horizontal_path = tf.reduce_mean(inputs, axis=1, keepdims=True)
+        horizontal_path = self.horizontal_dw1(horizontal_path)
+        horizontal_path = tf.nn.gelu(horizontal_path)
+        horizontal_path = self.horizontal_dw2(horizontal_path)
+        horizontal_path = tf.reduce_mean(horizontal_path, axis=2, keepdims=True)
+
+        global_context = tf.reduce_mean(inputs, axis=[1, 2], keepdims=True)
+        global_context = self.global_mix(global_context)
+
+        fused = vertical_path + horizontal_path + global_context
+        fused = self.channel_mix(fused)
+        gate = tf.nn.sigmoid(fused)
+        return inputs * gate
+
+
 def _attention_block(channels, attention):
     if attention == "none":
         return None
@@ -147,10 +303,23 @@ def _attention_block(channels, attention):
         return AxialSpatialGateMultiplyPostPointwise()
     if attention == "axial_sum_postpointwise":
         return AxialSpatialGateSumPostPointwise()
+    if attention == "axial_avg_pool_dual":
+        return AxialAvgPoolDualPathGate()
+    if attention == "axial_avg_pool_dual_shared_descriptor":
+        return AxialAvgPoolDualPathGateSharedDescriptor()
+    if attention == "axial_avg_pool_dual_channel_mix":
+        return AxialAvgPoolDualPathGateChannelMix()
+    if attention == "axial_avg_pool_dual_global_context":
+        return AxialAvgPoolDualPathGateGlobalContext()
+    if attention == "axial_avg_pool_dual_full_expressive":
+        return AxialAvgPoolDualPathGateFullExpressive()
     raise ValueError(
         "attention must be one of: none, se, cbam, axial_multiply, "
         "axial_multiply_pointwise, axial_sum, axial_sum_pointwise, "
-        "axial_multiply_postpointwise, axial_sum_postpointwise"
+        "axial_multiply_postpointwise, axial_sum_postpointwise, "
+        "axial_avg_pool_dual, axial_avg_pool_dual_shared_descriptor, "
+        "axial_avg_pool_dual_channel_mix, axial_avg_pool_dual_global_context, "
+        "axial_avg_pool_dual_full_expressive"
     )
 
 

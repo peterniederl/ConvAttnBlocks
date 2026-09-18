@@ -20,6 +20,11 @@ MODEL_ATTENTION = {
     "axial_sum_pointwise": "axial_sum_pointwise",
     "axial_multiply_postpointwise": "axial_multiply_postpointwise",
     "axial_sum_postpointwise": "axial_sum_postpointwise",
+    "axial_avg_pool_dual": "axial_avg_pool_dual",
+    "axial_avg_pool_dual_shared_descriptor": "axial_avg_pool_dual_shared_descriptor",
+    "axial_avg_pool_dual_channel_mix": "axial_avg_pool_dual_channel_mix",
+    "axial_avg_pool_dual_global_context": "axial_avg_pool_dual_global_context",
+    "axial_avg_pool_dual_full_expressive": "axial_avg_pool_dual_full_expressive",
 }
 
 
@@ -69,6 +74,22 @@ def _read_result(results_dir, model_name, run_number, seed):
     }
 
 
+def _run_is_complete(run_dir):
+    return all(
+        (run_dir / artifact).is_file()
+        for artifact in ("history.json", "evaluation.json", "final_model.keras")
+    )
+
+
+def _next_run_number(results_dir, model_name):
+    run_number = 1
+    while True:
+        run_dir = Path(results_dir) / f"{model_name}_run_{run_number:02d}"
+        if not run_dir.exists() or not _run_is_complete(run_dir):
+            return run_number
+        run_number += 1
+
+
 def write_summary(results_dir, records):
     results_path = Path(results_dir)
     results_path.mkdir(parents=True, exist_ok=True)
@@ -83,11 +104,9 @@ def write_summary(results_dir, records):
 
 def run_experiments(run_counts, model_names, base_seed, results_dir):
     records = []
-    maximum_runs = max(run_counts.values())
-    for run_number in range(1, maximum_runs + 1):
-        for model_name in model_names:
-            if run_number > run_counts[model_name]:
-                continue
+    for model_name in model_names:
+        for _ in range(run_counts[model_name]):
+            run_number = _next_run_number(results_dir, model_name)
             seed = base_seed + run_number - 1
             run_name = f"{model_name}_run_{run_number:02d}"
             print(f"\nStarting {run_name} with seed {seed}")
