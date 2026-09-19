@@ -20,11 +20,13 @@ MODEL_ATTENTION = {
     "axial_sum_pointwise": "axial_sum_pointwise",
     "axial_multiply_postpointwise": "axial_multiply_postpointwise",
     "axial_sum_postpointwise": "axial_sum_postpointwise",
-    "axial_avg_pool_dual": "axial_avg_pool_dual",
-    "axial_avg_pool_dual_shared_descriptor": "axial_avg_pool_dual_shared_descriptor",
-    "axial_avg_pool_dual_channel_mix": "axial_avg_pool_dual_channel_mix",
-    "axial_avg_pool_dual_global_context": "axial_avg_pool_dual_global_context",
-    "axial_avg_pool_dual_full_expressive": "axial_avg_pool_dual_full_expressive",
+    "axial_sum_se": "axial_sum_se",
+    "se_axial_sum": "se_axial_sum",
+    "axial_conv_attention": "axial_conv_attention",
+    "axial_conv_self_attention": "axial_conv_self_attention",
+    "axial_conv_self_attention_no_projection": "axial_conv_self_attention_no_projection",
+    "axial_avg_pool_dual_norm": "axial_avg_pool_dual_norm",
+    "axial_full_conv_gate": "axial_full_conv_gate",
 }
 
 
@@ -74,6 +76,19 @@ def _read_result(results_dir, model_name, run_number, seed):
     }
 
 
+def _average_best_validation_accuracy(results_dir):
+    scores = []
+    results_path = Path(results_dir)
+    for history_path in results_path.glob("*_run_*/history.json"):
+        if not _run_is_complete(history_path.parent):
+            continue
+        history = json.loads(history_path.read_text())
+        val_accuracy = history.get("val_accuracy") or []
+        if val_accuracy:
+            scores.append(max(val_accuracy))
+    return sum(scores) / len(scores) if scores else None
+
+
 def _run_is_complete(run_dir):
     return all(
         (run_dir / artifact).is_file()
@@ -110,16 +125,31 @@ def run_experiments(run_counts, model_names, base_seed, results_dir):
             seed = base_seed + run_number - 1
             run_name = f"{model_name}_run_{run_number:02d}"
             print(f"\nStarting {run_name} with seed {seed}")
-            ConfiguredExperiment(
+            experiment = ConfiguredExperiment(
                 run_name=run_name,
                 attention=MODEL_ATTENTION[model_name],
                 seed=seed,
                 results_dir=results_dir,
-            ).run()
+            )
+            experiment.run()
             records.append(_read_result(results_dir, model_name, run_number, seed))
             tf.keras.backend.clear_session()
             gc.collect()
             write_summary(results_dir, records)
+            experiment.publish_results()
+
+            average_best_accuracy = _average_best_validation_accuracy(results_dir)
+            current_best_accuracy = records[-1]["best_val_accuracy"]
+            if (
+                average_best_accuracy is not None
+                and current_best_accuracy < average_best_accuracy
+            ):
+                print(
+                    f"Skipping remaining {model_name} runs: "
+                    f"best validation accuracy {current_best_accuracy:.4f} is below "
+                    f"the global average {average_best_accuracy:.4f}."
+                )
+                break
 
     return records
 

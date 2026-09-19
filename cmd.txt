@@ -10,3 +10,28 @@ python run_experiments.py \
 python run_experiments.py \
   --models baseline se cbam axial_multiply axial_multiply_pointwise axial_sum axial_sum_pointwise axial_multiply_postpointwise axial_sum_postpointwise\
   --runs baseline=2 se=3 cbam=3 axial_multiply=3 axial_multiply_pointwise=3 axial_sum=3 axial_sum_pointwise=3 axial_multiply_postpointwise=3 axial_sum_postpointwise=3
+
+python3 compare_histories.py \
+  axial_avg_pool_dual_run_01 \
+  axial_avg_pool_dual_norm_run_01 \
+  se_run_01 \
+  --metric val_accuracy \
+  --output results/history_comparison.png
+
+python3 compare_histories.py \
+  axial_full_conv_gate_run_01 \
+  axial_avg_pool_dual_run_01 \
+  axial_avg_pool_dual_norm_run_01 \
+  axial_sum_run_01 \
+  se_run_01 \
+  --metric val_accuracy \
+  --output results/history_comparison.png
+
+python run_experiments.py \
+  --models axial_full_conv_gate \
+  --runs  axial_full_conv_gate=3
+
+
+python run_experiments.py \
+  --models AxialConvSelfAttention AxialConvSelfAttentionNoProjection axial_conv_attention \
+  --runs AxialConvSelfAttention=3 AxialConvSelfAttentionNoProjection=3 axial_conv_attention=3

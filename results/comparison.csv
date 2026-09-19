@@ -1,2 +1,2 @@
 model,run,seed,run_name,best_val_accuracy,best_val_loss,final_val_accuracy,final_val_loss,evaluation_accuracy,evaluation_loss
-axial_avg_pool_dual_norm,1,42,axial_avg_pool_dual_norm_run_01,0.6165000200271606,1.7674713134765625,0.6165000200271606,1.7643697261810303,0.6165000200271606,1.7643697261810303
+axial_full_conv_gate,1,42,axial_full_conv_gate_run_01,0.6122999787330627,1.7623955011367798,0.6115000247955322,1.7570347785949707,0.6115000247955322,1.7570347785949707

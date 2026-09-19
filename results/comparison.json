@@ -1,14 +1,14 @@
 [
   {
-    "model": "axial_avg_pool_dual_norm",
+    "model": "axial_full_conv_gate",
     "run": 1,
     "seed": 42,
-    "run_name": "axial_avg_pool_dual_norm_run_01",
-    "best_val_accuracy": 0.6165000200271606,
-    "best_val_loss": 1.7674713134765625,
-    "final_val_accuracy": 0.6165000200271606,
-    "final_val_loss": 1.7643697261810303,
-    "evaluation_accuracy": 0.6165000200271606,
-    "evaluation_loss": 1.7643697261810303
+    "run_name": "axial_full_conv_gate_run_01",
+    "best_val_accuracy": 0.6122999787330627,
+    "best_val_loss": 1.7623955011367798,
+    "final_val_accuracy": 0.6115000247955322,
+    "final_val_loss": 1.7570347785949707,
+    "evaluation_accuracy": 0.6115000247955322,
+    "evaluation_loss": 1.7570347785949707
   }
 ]

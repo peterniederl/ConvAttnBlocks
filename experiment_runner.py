@@ -42,11 +42,7 @@ class ResNetExperiment:
             print("[publish] No git repository detected, skipping Git push.")
             return False
 
-        files_to_stage = [
-            str(Path(results_dir) / "comparison.csv"),
-            str(Path(results_dir) / "comparison.json"),
-            str(Path(results_dir) / "comparison.html"),
-        ]
+        files_to_stage = [str(Path(results_dir))]
 
         try:
             subprocess.run(["git", "rev-parse", "--is-inside-work-tree"], cwd=str(repo_root), check=True, capture_output=True, text=True)
@@ -68,12 +64,23 @@ class ResNetExperiment:
             print(f"[publish] Git publish failed: {exc}")
             return False
 
+    def publish_results(self):
+        results_dir = Path(self.config().results_dir)
+        results_dir.mkdir(parents=True, exist_ok=True)
+        self._generate_html_report(results_dir)
+        return self._publish_results_to_github(results_dir)
+
     def run(self):
         config = self.config()
         random.seed(config.seed)
         np.random.seed(config.seed)
         tf.random.set_seed(config.seed)
-        tf.keras.mixed_precision.set_global_policy("mixed_float16")
+        use_mixed_precision = not (
+            sys.platform == "darwin" and platform.machine() == "arm64"
+        )
+        tf.keras.mixed_precision.set_global_policy(
+            "mixed_float16" if use_mixed_precision else "float32"
+        )
         run_dir = Path(config.results_dir) / config.run_name
         run_dir.mkdir(parents=True, exist_ok=True)
         self._write_json(run_dir / "settings.json", config.to_dict())
@@ -85,7 +92,19 @@ class ResNetExperiment:
 
         train_ds, val_ds = TinyImageNetData(config).datasets()
         model = self.build_model(config)
-        optimizer = keras.optimizers.AdamW(learning_rate=config.base_lr, weight_decay=config.weight_decay, beta_1=config.beta_1, beta_2=config.beta_2)
+        if sys.platform == "darwin" and platform.machine() == "arm64":
+            optimizer = tf.keras.optimizers.legacy.Adam(
+                learning_rate=config.base_lr,
+                beta_1=config.beta_1,
+                beta_2=config.beta_2,
+            )
+        else:
+            optimizer = tf.keras.optimizers.AdamW(
+                learning_rate=config.base_lr,
+                weight_decay=config.weight_decay,
+                beta_1=config.beta_1,
+                beta_2=config.beta_2,
+            )
         model.compile(optimizer=optimizer, loss=keras.losses.CategoricalCrossentropy(from_logits=True, label_smoothing=config.label_smoothing), metrics=["accuracy"])
         self._write_json(run_dir / "model_config.json", json.loads(model.to_json()))
         with (run_dir / "model_summary.txt").open("w") as summary_file:
@@ -108,11 +127,6 @@ class ResNetExperiment:
         self._write_json(run_dir / "history.json", history.history)
         self._write_json(run_dir / "evaluation.json", {key: float(value) for key, value in evaluation.items()})
         model.save(run_dir / "final_model.keras")
-
-        results_dir = Path(config.results_dir)
-        results_dir.mkdir(parents=True, exist_ok=True)
-        self._generate_html_report(results_dir)
-        self._publish_results_to_github(results_dir)
         return run_dir
 
     @staticmethod
