@@ -10,5 +10,17 @@
     "final_val_loss": 1.6915172338485718,
     "evaluation_accuracy": 0.6169999837875366,
     "evaluation_loss": 1.6915172338485718
+  },
+  {
+    "model": "axial_avg_pool_dual",
+    "run": 2,
+    "seed": 43,
+    "run_name": "axial_avg_pool_dual_run_02",
+    "best_val_accuracy": 0.6100000143051147,
+    "best_val_loss": 1.721431016921997,
+    "final_val_accuracy": 0.6086999773979187,
+    "final_val_loss": 1.7200744152069092,
+    "evaluation_accuracy": 0.6086999773979187,
+    "evaluation_loss": 1.7200744152069092
   }
 ]
