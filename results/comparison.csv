@@ -1,2 +1,2 @@
 model,run,seed,run_name,best_val_accuracy,best_val_loss,final_val_accuracy,final_val_loss,evaluation_accuracy,evaluation_loss
-axial_conv_attention,1,42,axial_conv_attention_run_01,0.616599977016449,1.6639363765716553,0.6158999800682068,1.6590992212295532,0.6158999800682068,1.6590992212295532
+projected_gate_upsample_stride2,1,42,projected_gate_upsample_stride2_run_01,0.6053000092506409,1.7113550901412964,0.602400004863739,1.707349181175232,0.602400004863739,1.707349181175232

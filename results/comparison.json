@@ -1,14 +1,14 @@
 [
   {
-    "model": "axial_conv_attention",
+    "model": "projected_gate_upsample_stride2",
     "run": 1,
     "seed": 42,
-    "run_name": "axial_conv_attention_run_01",
-    "best_val_accuracy": 0.616599977016449,
-    "best_val_loss": 1.6639363765716553,
-    "final_val_accuracy": 0.6158999800682068,
-    "final_val_loss": 1.6590992212295532,
-    "evaluation_accuracy": 0.6158999800682068,
-    "evaluation_loss": 1.6590992212295532
+    "run_name": "projected_gate_upsample_stride2_run_01",
+    "best_val_accuracy": 0.6053000092506409,
+    "best_val_loss": 1.7113550901412964,
+    "final_val_accuracy": 0.602400004863739,
+    "final_val_loss": 1.707349181175232,
+    "evaluation_accuracy": 0.602400004863739,
+    "evaluation_loss": 1.707349181175232
   }
 ]
