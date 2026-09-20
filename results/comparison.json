@@ -1,14 +1,14 @@
 [
   {
-    "model": "axial_full_conv_gate",
+    "model": "axial_conv_attention",
     "run": 1,
     "seed": 42,
-    "run_name": "axial_full_conv_gate_run_01",
-    "best_val_accuracy": 0.6122999787330627,
-    "best_val_loss": 1.7623955011367798,
-    "final_val_accuracy": 0.6115000247955322,
-    "final_val_loss": 1.7570347785949707,
-    "evaluation_accuracy": 0.6115000247955322,
-    "evaluation_loss": 1.7570347785949707
+    "run_name": "axial_conv_attention_run_01",
+    "best_val_accuracy": 0.616599977016449,
+    "best_val_loss": 1.6639363765716553,
+    "final_val_accuracy": 0.6158999800682068,
+    "final_val_loss": 1.6590992212295532,
+    "evaluation_accuracy": 0.6158999800682068,
+    "evaluation_loss": 1.6590992212295532
   }
 ]
