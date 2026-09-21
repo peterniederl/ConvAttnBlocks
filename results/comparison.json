@@ -1,26 +1,14 @@
 [
   {
-    "model": "projected_gate_upsample_stride2",
+    "model": "multi_stage_spatial_mixer",
     "run": 1,
     "seed": 42,
-    "run_name": "projected_gate_upsample_stride2_run_01",
-    "best_val_accuracy": 0.6053000092506409,
-    "best_val_loss": 1.7113550901412964,
-    "final_val_accuracy": 0.602400004863739,
-    "final_val_loss": 1.707349181175232,
-    "evaluation_accuracy": 0.602400004863739,
-    "evaluation_loss": 1.707349181175232
-  },
-  {
-    "model": "projected_gate_upsample_stride4",
-    "run": 1,
-    "seed": 42,
-    "run_name": "projected_gate_upsample_stride4_run_01",
-    "best_val_accuracy": 0.6037999987602234,
-    "best_val_loss": 1.771966814994812,
-    "final_val_accuracy": 0.6035000085830688,
-    "final_val_loss": 1.7711734771728516,
-    "evaluation_accuracy": 0.6035000085830688,
-    "evaluation_loss": 1.7711734771728516
+    "run_name": "multi_stage_spatial_mixer_run_01",
+    "best_val_accuracy": 0.6108999848365784,
+    "best_val_loss": 1.7307758331298828,
+    "final_val_accuracy": 0.6090999841690063,
+    "final_val_loss": 1.7302426099777222,
+    "evaluation_accuracy": 0.6090999841690063,
+    "evaluation_loss": 1.7302426099777222
   }
 ]
