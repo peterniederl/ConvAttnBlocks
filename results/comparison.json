@@ -1,14 +1,14 @@
 [
   {
-    "model": "multi_stage_spatial_mixer",
-    "run": 2,
-    "seed": 43,
-    "run_name": "multi_stage_spatial_mixer_run_02",
-    "best_val_accuracy": 0.603600025177002,
-    "best_val_loss": 1.7565404176712036,
-    "final_val_accuracy": 0.6019999980926514,
-    "final_val_loss": 1.7903856039047241,
-    "evaluation_accuracy": 0.6019999980926514,
-    "evaluation_loss": 1.7903856039047241
+    "model": "axial_sum_tanh",
+    "run": 1,
+    "seed": 42,
+    "run_name": "axial_sum_tanh_run_01",
+    "best_val_accuracy": 0.6092000007629395,
+    "best_val_loss": 1.6666969060897827,
+    "final_val_accuracy": 0.6089000105857849,
+    "final_val_loss": 1.6665695905685425,
+    "evaluation_accuracy": 0.6089000105857849,
+    "evaluation_loss": 1.6665695905685425
   }
 ]
