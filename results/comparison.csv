@@ -1,2 +1,2 @@
 model,run,seed,run_name,best_val_accuracy,best_val_loss,final_val_accuracy,final_val_loss,evaluation_accuracy,evaluation_loss
-multi_stage_spatial_mixer,1,42,multi_stage_spatial_mixer_run_01,0.6108999848365784,1.7307758331298828,0.6090999841690063,1.7302426099777222,0.6090999841690063,1.7302426099777222
+multi_stage_spatial_mixer,2,43,multi_stage_spatial_mixer_run_02,0.603600025177002,1.7565404176712036,0.6019999980926514,1.7903856039047241,0.6019999980926514,1.7903856039047241
