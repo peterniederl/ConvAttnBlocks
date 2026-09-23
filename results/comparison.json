@@ -34,5 +34,17 @@
     "final_val_loss": 1.8155995607376099,
     "evaluation_accuracy": 0.6054999828338623,
     "evaluation_loss": 1.8155995607376099
+  },
+  {
+    "model": "axial_multiply",
+    "run": 1,
+    "seed": 42,
+    "run_name": "axial_multiply_run_01",
+    "best_val_accuracy": 0.6047000288963318,
+    "best_val_loss": 1.7144818305969238,
+    "final_val_accuracy": 0.6046000123023987,
+    "final_val_loss": 1.7157267332077026,
+    "evaluation_accuracy": 0.6046000123023987,
+    "evaluation_loss": 1.7157267332077026
   }
 ]
