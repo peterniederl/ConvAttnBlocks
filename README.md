@@ -1,11 +1,16 @@
 # ResNet Attention Experiments on Tiny ImageNet
 
-This repository provides a reproducible training pipeline for comparing a small ResNet-style image classifier with four attention configurations:
+This repository provides a reproducible training pipeline for comparing a small ResNet-style image classifier with nine attention configurations:
 
 - **Baseline**: no attention block
 - **SE**: squeeze-and-excitation channel attention
 - **CBAM**: channel and spatial attention
-- **Axial**: depthwise height- and width-wise spatial attention
+- **Axial multiply**: normalized height- and width-wise depthwise attention with multiplicative fusion
+- **Axial multiply pointwise**: the same attention with a preceding `1 x 1` channel projection
+- **Axial sum**: normalized height- and width-wise depthwise attention with additive fusion
+- **Axial sum pointwise**: the same attention with a preceding `1 x 1` channel projection
+- **Axial multiply postpointwise**: multiplicative fusion with channel mixing after the depthwise convolutions
+- **Axial sum postpointwise**: additive fusion with channel mixing after the depthwise convolutions
 
 The experiments use the Tiny ImageNet dataset with a shared data pipeline, augmentation settings, optimizer, loss, learning-rate schedule, and evaluation procedure. This keeps comparisons between model variants consistent.
 
@@ -31,12 +36,12 @@ The recommended entry point runs three repetitions for each model by default:
 python3 run_experiments.py
 ```
 
-This runs the baseline, SE, and CBAM models for three runs each. To choose the number of repetitions or models:
+This runs the selected models for three runs each by default. To choose models and set run counts independently:
 
 ```bash
-python3 run_experiments.py --runs 5
-python3 run_experiments.py --runs 3 --models baseline se cbam axial
-python3 run_experiments.py --runs 1 --models cbam
+python3 run_experiments.py --models baseline se cbam axial_multiply axial_sum
+python3 run_experiments.py --models baseline axial_multiply_pointwise axial_sum_pointwise --runs baseline=5 axial_multiply_pointwise=3 axial_sum_pointwise=2
+python3 run_experiments.py --models cbam --runs cbam=1
 ```
 
 Each model is trained for 100 epochs by default. A new model is created for each run, and the previous TensorFlow session is cleared before the next model is built.

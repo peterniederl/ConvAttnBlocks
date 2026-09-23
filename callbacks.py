@@ -35,7 +35,11 @@ class CosineAnnealingScheduler(keras.callbacks.Callback):
                 1 + np.cos(np.pi * p)
             )
 
-        keras.backend.set_value(self.model.optimizer.lr, lr)
+        learning_rate = self.model.optimizer.learning_rate
+        if hasattr(learning_rate, "assign"):
+            learning_rate.assign(lr)
+        else:
+            keras.backend.set_value(learning_rate, lr)
 
         if self.verbose and (epoch < 1 or (epoch + 1) % 5 == 0):
             phase = "warmup" if epoch < self.warmup_epochs else "cosine"

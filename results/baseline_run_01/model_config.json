@@ -55,14 +55,7 @@
             1,
             1
           ],
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 64,
           "groups": 1,
           "kernel_constraint": null,
@@ -125,14 +118,7 @@
           },
           "beta_regularizer": null,
           "center": true,
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "epsilon": 0.001,
           "gamma_constraint": null,
           "gamma_initializer": {
@@ -185,14 +171,7 @@
         "class_name": "Activation",
         "config": {
           "activation": "relu",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "name": "activation",
           "trainable": true
         },
@@ -222,18 +201,12 @@
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 64,
           "name": "residual_block",
           "stride": 1,
-          "trainable": true
+          "trainable": true,
+          "use_post_block": true
         },
         "inbound_nodes": [
           [
@@ -261,18 +234,12 @@
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 64,
           "name": "residual_block_1",
           "stride": 1,
-          "trainable": true
+          "trainable": true,
+          "use_post_block": false
         },
         "inbound_nodes": [
           [
@@ -300,18 +267,12 @@
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 128,
           "name": "residual_block_2",
           "stride": 2,
-          "trainable": true
+          "trainable": true,
+          "use_post_block": false
         },
         "inbound_nodes": [
           [
@@ -339,18 +300,12 @@
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 128,
           "name": "residual_block_3",
           "stride": 1,
-          "trainable": true
+          "trainable": true,
+          "use_post_block": true
         },
         "inbound_nodes": [
           [
@@ -378,18 +333,12 @@
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 128,
           "name": "residual_block_4",
           "stride": 1,
-          "trainable": true
+          "trainable": true,
+          "use_post_block": false
         },
         "inbound_nodes": [
           [
@@ -417,18 +366,12 @@
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 256,
           "name": "residual_block_5",
           "stride": 2,
-          "trainable": true
+          "trainable": true,
+          "use_post_block": false
         },
         "inbound_nodes": [
           [
@@ -456,18 +399,12 @@
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 256,
           "name": "residual_block_6",
           "stride": 1,
-          "trainable": true
+          "trainable": true,
+          "use_post_block": false
         },
         "inbound_nodes": [
           [
@@ -495,18 +432,12 @@
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 256,
           "name": "residual_block_7",
           "stride": 1,
-          "trainable": true
+          "trainable": true,
+          "use_post_block": true
         },
         "inbound_nodes": [
           [
@@ -534,18 +465,12 @@
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "filters": 256,
           "name": "residual_block_8",
           "stride": 1,
-          "trainable": true
+          "trainable": true,
+          "use_post_block": false
         },
         "inbound_nodes": [
           [
@@ -573,14 +498,7 @@
         "class_name": "GlobalAveragePooling2D",
         "config": {
           "data_format": "channels_last",
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "keepdims": false,
           "name": "global_average_pooling2d",
           "trainable": true
@@ -608,14 +526,7 @@
         },
         "class_name": "Dropout",
         "config": {
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "name": "dropout",
           "noise_shape": null,
           "rate": 0.3,
@@ -655,14 +566,7 @@
             "registered_name": null
           },
           "bias_regularizer": null,
-          "dtype": {
-            "class_name": "Policy",
-            "config": {
-              "name": "mixed_float16"
-            },
-            "module": "keras.mixed_precision",
-            "registered_name": null
-          },
+          "dtype": "float32",
           "kernel_constraint": null,
           "kernel_initializer": {
             "class_name": "GlorotUniform",
