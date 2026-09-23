@@ -1,0 +1,2 @@
+model,run,seed,run_name,best_val_accuracy,best_val_loss,final_val_accuracy,final_val_loss,evaluation_accuracy,evaluation_loss
+baseline,1,42,baseline_run_01,0.6121000051498413,1.728355050086975,0.6110000014305115,1.7142568826675415,0.6110000014305115,1.7142568826675415

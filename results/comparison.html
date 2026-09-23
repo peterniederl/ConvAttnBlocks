@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Experiment Results</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #f5f7fb;
+      font-family: Arial, sans-serif;
+      color: #1f2937;
+    }
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .chart-card, .table-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+      padding: 14px 14px 10px;
+      margin-bottom: 20px;
+    }
+    .selection-card {
+      background: white;
+      border: 1px solid #dfe3eb;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 20px;
+    }
+    .selection-actions {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .selection-actions button {
+      border: 1px solid #c7d2e3;
+      border-radius: 6px;
+      background: #f8fafc;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    .run-selectors {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 7px 14px;
+      max-height: 210px;
+      overflow-y: auto;
+    }
+    .run-selectors label {
+      overflow-wrap: anywhere;
+    }
+    .chart {
+      width: 100%;
+      height: 440px;
+    }
+    h2 {
+      margin: 0 0 12px 0;
+      font-size: 1.25rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid #dfe3eb;
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eef4ff;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+    }
+    tbody tr:nth-child(even) {
+      background: #fafbff;
+    }
+    .sort-indicator {
+      display: inline-block;
+      width: 10px;
+      margin-left: 6px;
+      color: #4b5563;
+    }
+    @media (max-width: 900px) {
+      body { padding: 12px; }
+      th, td { padding: 6px 8px; }
+      .chart { height: 360px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="selection-card">
+      <h2>Select runs to visualize</h2>
+      <div class="selection-actions">
+        <button type="button" id="select-all">Select all</button>
+        <button type="button" id="select-none">Select none</button>
+      </div>
+      <div class="run-selectors"><label><input type="checkbox" class="run-selector" value="baseline_run_01" checked /> baseline_run_01</label></div>
+    </div>
+    <div class="chart-card">
+      <h2>Training accuracy</h2>
+      <div id="chart-training-accuracy" class="chart"></div>
+    </div>
+    <div class="chart-card">
+      <h2>Validation accuracy</h2>
+      <div id="chart-accuracy" class="chart"></div>
+    </div>
+    <div class="chart-card">
+      <h2>Validation loss</h2>
+      <div id="chart-loss" class="chart"></div>
+    </div>
+    <div class="chart-card">
+      <h2>Validation accuracy in the last 25 epochs</h2>
+      <div id="chart-last25-accuracy" class="chart"></div>
+    </div>
+    <div class="table-card">
+      <h2>All run results</h2>
+      <table id="results-table">
+        <thead>
+          <tr><th data-key="model">Model<span class="sort-indicator"></span></th><th data-key="run">Run<span class="sort-indicator"></span></th><th data-key="seed">Seed<span class="sort-indicator"></span></th><th data-key="best_val_accuracy">Best val accuracy<span class="sort-indicator"></span></th><th data-key="best_val_loss">Best val loss<span class="sort-indicator"></span></th><th data-key="final_val_accuracy">Final val accuracy<span class="sort-indicator"></span></th><th data-key="final_val_loss">Final val loss<span class="sort-indicator"></span></th><th data-key="final_training_accuracy">Final training accuracy<span class="sort-indicator"></span></th><th data-key="final_training_loss">Final training loss<span class="sort-indicator"></span></th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-key="model">baseline</td><td data-key="run">baseline_run_01</td><td data-key="seed">42</td><td data-key="best_val_accuracy">0.6121</td><td data-key="best_val_loss">1.7284</td><td data-key="final_val_accuracy">0.611</td><td data-key="final_val_loss">1.7143</td><td data-key="final_training_accuracy">0.7406</td><td data-key="final_training_loss">1.7259</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const table = document.getElementById('results-table');
+    const accuracyData = [{"type": "scatter", "mode": "lines", "name": "baseline_run_01", "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100], "y": [0.06790000200271606, 0.11299999803304672, 0.1868000030517578, 0.17800000309944153, 0.11069999635219574, 0.21480000019073486, 0.3163999915122986, 0.2757999897003174, 0.34689998626708984, 0.37059998512268066, 0.388700008392334, 0.41940000653266907, 0.4237000048160553, 0.45010000467300415, 0.46970000863075256, 0.4629000127315521, 0.4683000147342682, 0.48080000281333923, 0.48410001397132874, 0.4959999918937683, 0.5059999823570251, 0.5246999859809875, 0.5274999737739563, 0.5307000279426575, 0.5304999947547913, 0.5335999727249146, 0.5327000021934509, 0.5364999771118164, 0.541700005531311, 0.5547999739646912, 0.5569999814033508, 0.557200014591217, 0.5587000250816345, 0.546500027179718, 0.5672000050544739, 0.5645999908447266, 0.5659000277519226, 0.5654000043869019, 0.5453000068664551, 0.5647000074386597, 0.5659000277519226, 0.5791000127792358, 0.5778999924659729, 0.5760999917984009, 0.5813000202178955, 0.5820000171661377, 0.5748000144958496, 0.5841000080108643, 0.5814999938011169, 0.5823000073432922, 0.5910999774932861, 0.5924999713897705, 0.5918999910354614, 0.5949000120162964, 0.5906000137329102, 0.5867000222206116, 0.5918999910354614, 0.5842000246047974, 0.590499997138977, 0.5911999940872192, 0.5950999855995178, 0.592199981212616, 0.5974000096321106, 0.593999981880188, 0.593999981880188, 0.5990999937057495, 0.5965999960899353, 0.6011999845504761, 0.5996000170707703, 0.5982000231742859, 0.6039000153541565, 0.6050000190734863, 0.6025999784469604, 0.6029000282287598, 0.6003000140190125, 0.6053000092506409, 0.6035000085830688, 0.6050999760627747, 0.6121000051498413, 0.6050000190734863, 0.6068999767303467, 0.6047000288963318, 0.61080002784729, 0.6116999983787537, 0.6118000149726868, 0.6092000007629395, 0.6115999817848206, 0.6100000143051147, 0.6108999848365784, 0.6089000105857849, 0.6098999977111816, 0.6107000112533569, 0.6111000180244446, 0.6103000044822693, 0.6097000241279602, 0.6100000143051147, 0.6105999946594238, 0.6118999719619751, 0.6108999848365784, 0.6110000014305115], "line": {"width": 2}}];
+    const lossData = [{"type": "scatter", "mode": "lines", "name": "baseline_run_01", "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100], "y": [4.4981584548950195, 4.160922050476074, 3.641298532485962, 3.675985097885132, 7.454214096069336, 3.5658047199249268, 2.894421100616455, 3.2742490768432617, 2.8428397178649902, 2.6557297706604004, 2.6495237350463867, 2.3905725479125977, 2.4368386268615723, 2.275320291519165, 2.2016587257385254, 2.2246012687683105, 2.234680414199829, 2.152069330215454, 2.159379005432129, 2.0713210105895996, 2.0394551753997803, 1.9386779069900513, 1.9499459266662598, 1.928239107131958, 1.9598859548568726, 1.9302382469177246, 1.9488928318023682, 1.926173448562622, 1.896708607673645, 1.8514373302459717, 1.854372501373291, 1.8374677896499634, 1.8505159616470337, 1.8772563934326172, 1.8010156154632568, 1.8449058532714844, 1.8121237754821777, 1.8066519498825073, 1.9143173694610596, 1.8442394733428955, 1.8574304580688477, 1.7827894687652588, 1.7647197246551514, 1.7940058708190918, 1.768964409828186, 1.7865015268325806, 1.7870947122573853, 1.7649081945419312, 1.7630480527877808, 1.7660579681396484, 1.7525194883346558, 1.7517503499984741, 1.725935697555542, 1.7316279411315918, 1.745975375175476, 1.7716271877288818, 1.7484993934631348, 1.7860037088394165, 1.7715749740600586, 1.7528482675552368, 1.772202730178833, 1.7484720945358276, 1.748842716217041, 1.750313639640808, 1.7614247798919678, 1.7493849992752075, 1.7530193328857422, 1.7395668029785156, 1.7416341304779053, 1.7531373500823975, 1.7333228588104248, 1.736215591430664, 1.726072907447815, 1.7559276819229126, 1.7456519603729248, 1.7511824369430542, 1.7496086359024048, 1.7468228340148926, 1.728355050086975, 1.7622170448303223, 1.7297296524047852, 1.7392908334732056, 1.7195597887039185, 1.731177568435669, 1.7278597354888916, 1.7187734842300415, 1.7179081439971924, 1.7180324792861938, 1.7269525527954102, 1.7197824716567993, 1.7179151773452759, 1.7155951261520386, 1.7155841588974, 1.716382622718811, 1.7146329879760742, 1.7152280807495117, 1.7127939462661743, 1.711334228515625, 1.7130591869354248, 1.7142568826675415], "line": {"width": 2}}];
+    const recentAccuracyData = [{"type": "scatter", "mode": "lines", "name": "baseline_run_01", "x": [76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100], "y": [0.6053000092506409, 0.6035000085830688, 0.6050999760627747, 0.6121000051498413, 0.6050000190734863, 0.6068999767303467, 0.6047000288963318, 0.61080002784729, 0.6116999983787537, 0.6118000149726868, 0.6092000007629395, 0.6115999817848206, 0.6100000143051147, 0.6108999848365784, 0.6089000105857849, 0.6098999977111816, 0.6107000112533569, 0.6111000180244446, 0.6103000044822693, 0.6097000241279602, 0.6100000143051147, 0.6105999946594238, 0.6118999719619751, 0.6108999848365784, 0.6110000014305115], "line": {"width": 2}}];
+    const trainingAccuracyData = [{"type": "scatter", "mode": "lines", "name": "baseline_run_01", "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100], "y": [0.033800818026065826, 0.07407370209693909, 0.11706746369600296, 0.15347911417484283, 0.1830085664987564, 0.2174495905637741, 0.24505841732025146, 0.2749579846858978, 0.293443888425827, 0.31345030665397644, 0.3336167633533478, 0.34778130054473877, 0.3659670948982239, 0.3768305778503418, 0.3927556872367859, 0.40516966581344604, 0.41744357347488403, 0.4277168810367584, 0.44024088978767395, 0.44855353236198425, 0.4543454051017761, 0.4665292799472809, 0.47508203983306885, 0.47997358441352844, 0.4895866811275482, 0.49568861722946167, 0.5053316950798035, 0.512273907661438, 0.5170354247093201, 0.5241076946258545, 0.532100260257721, 0.5346710681915283, 0.5438039898872375, 0.5506362318992615, 0.5569282174110413, 0.5599091649055481, 0.563350260257721, 0.570802628993988, 0.5781450271606445, 0.5808558464050293, 0.5868077874183655, 0.5927897095680237, 0.600182056427002, 0.6043733954429626, 0.6084946990013123, 0.6133862733840942, 0.6185879707336426, 0.6201384663581848, 0.625430166721344, 0.63038170337677, 0.6335627436637878, 0.6393646001815796, 0.6452764868736267, 0.6495078206062317, 0.6503381133079529, 0.6548295617103577, 0.6586407423019409, 0.664262592792511, 0.6667433381080627, 0.6729953289031982, 0.6728352904319763, 0.6794174313545227, 0.6806778311729431, 0.6847491264343262, 0.6877900958061218, 0.6915512681007385, 0.6945022344589233, 0.6994237899780273, 0.7004241347312927, 0.7018746137619019, 0.7073163390159607, 0.7087668180465698, 0.7095470428466797, 0.7119778394699097, 0.7165392637252808, 0.7198203206062317, 0.7191601395606995, 0.7228112816810608, 0.723901629447937, 0.7264724969863892, 0.7266625165939331, 0.7286431789398193, 0.7293934226036072, 0.7329345345497131, 0.730993926525116, 0.7337648272514343, 0.7341049313545227, 0.7340748906135559, 0.7365456819534302, 0.7367857694625854, 0.7372159361839294, 0.7384462952613831, 0.7373959422111511, 0.7377960681915283, 0.7400568127632141, 0.7389164566993713, 0.7412571907043457, 0.7396867275238037, 0.7397867441177368, 0.7406070232391357], "line": {"width": 2}}];
+
+    const commonLayout = {
+      legend: {
+        orientation: 'h',
+        x: 0.5,
+        y: 1.12,
+        xanchor: 'center',
+        yanchor: 'bottom',
+        font: {size: 11}
+      },
+      hovermode: 'closest',
+      paper_bgcolor: 'white',
+      plot_bgcolor: 'white',
+      dragmode: 'zoom',
+      modebar: {orientation: 'v'}
+    };
+
+    const accuracyLayout = {
+      ...commonLayout,
+      xaxis: {title: 'Epoch'},
+      yaxis: {title: 'Accuracy'},
+      margin: {l: 60, r: 20, t: 10, b: 90}
+    };
+
+    const lossLayout = {
+      ...commonLayout,
+      xaxis: {title: 'Epoch'},
+      yaxis: {title: 'Loss'},
+      margin: {l: 60, r: 20, t: 10, b: 90}
+    };
+
+    const recentAccuracyLayout = {
+      ...commonLayout,
+      xaxis: {title: 'Epoch'},
+      yaxis: {title: 'Accuracy'},
+      margin: {l: 60, r: 20, t: 10, b: 90}
+    };
+
+    const chartConfigs = [
+      ['chart-training-accuracy', trainingAccuracyData, accuracyLayout],
+      ['chart-accuracy', accuracyData, accuracyLayout],
+      ['chart-loss', lossData, lossLayout],
+      ['chart-last25-accuracy', recentAccuracyData, recentAccuracyLayout]
+    ];
+
+    const selectors = [...document.querySelectorAll('.run-selector')];
+    const tableRows = [...table.querySelectorAll('tbody tr')];
+
+    function selectedRuns() {
+      return new Set(selectors.filter(selector => selector.checked).map(selector => selector.value));
+    }
+
+    function renderCharts() {
+      const selected = selectedRuns();
+      chartConfigs.forEach(([chartId, traces, layout]) => {
+        const visibleTraces = traces.filter(trace => selected.has(trace.name));
+        Plotly.react(chartId, visibleTraces, layout, {responsive: true, displaylogo: false, scrollZoom: true});
+      });
+      tableRows.forEach(row => {
+        const runName = row.querySelector('td[data-key="run"]')?.textContent.trim();
+        row.hidden = !selected.has(runName);
+      });
+    }
+
+    chartConfigs.forEach(([chartId]) => {
+      Plotly.newPlot(chartId, [], commonLayout, {responsive: true, displaylogo: false, scrollZoom: true});
+      const graph = document.getElementById(chartId);
+      graph.on('plotly_legendclick', function(event) {
+        const traceIndex = event.curveNumber;
+        const traceStates = this.data.map((trace) => trace.visible);
+        const isolate = traceStates[traceIndex] !== false && traceStates[traceIndex] !== 'legendonly';
+
+        if (isolate) {
+          Plotly.restyle(this, 'visible', 'legendonly', Array.from({length: this.data.length}, (_, i) => i).filter((i) => i !== traceIndex));
+          Plotly.restyle(this, 'visible', true, [traceIndex]);
+        } else {
+          Plotly.restyle(this, 'visible', true, Array.from({length: this.data.length}, (_, i) => i));
+        }
+        return false;
+      });
+    });
+
+    selectors.forEach(selector => selector.addEventListener('change', renderCharts));
+    document.getElementById('select-all').addEventListener('click', () => {
+      selectors.forEach(selector => selector.checked = true);
+      renderCharts();
+    });
+    document.getElementById('select-none').addEventListener('click', () => {
+      selectors.forEach(selector => selector.checked = false);
+      renderCharts();
+    });
+    renderCharts();
+
+    window.addEventListener('resize', () => {
+      chartConfigs.forEach(([chartId]) => Plotly.Plots.resize(chartId));
+    });
+
+    const headers = table.querySelectorAll('th[data-key]');
+    let currentSort = {key: null, dir: 1};
+
+    function parseCellValue(value) {
+      if (value === '-' || value === '') return Number.NEGATIVE_INFINITY;
+      const num = Number(value);
+      return Number.isFinite(num) ? num : String(value).toLowerCase();
+    }
+
+    function sortTable(key) {
+      const rows = [...table.querySelectorAll('tbody tr')];
+      const dir = currentSort.key === key && currentSort.dir === 1 ? -1 : 1;
+      currentSort = {key, dir};
+
+      rows.sort((rowA, rowB) => {
+        const a = parseCellValue(rowA.querySelector(`td[data-key="${key}"]`)?.textContent.trim() ?? '');
+        const b = parseCellValue(rowB.querySelector(`td[data-key="${key}"]`)?.textContent.trim() ?? '');
+        if (a < b) return -1 * dir;
+        if (a > b) return 1 * dir;
+        return 0;
+      });
+
+      rows.forEach(row => table.querySelector('tbody').appendChild(row));
+      headers.forEach(header => {
+        const indicator = header.querySelector('.sort-indicator');
+        if (header.dataset.key !== key) {
+          indicator.textContent = '';
+          return;
+        }
+        indicator.textContent = dir === 1 ? '▲' : '▼';
+      });
+    }
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => sortTable(header.dataset.key));
+    });
+  </script>
+</body>
+</html>
