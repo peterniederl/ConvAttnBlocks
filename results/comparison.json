@@ -46,5 +46,17 @@
     "final_val_loss": 1.7157267332077026,
     "evaluation_accuracy": 0.6046000123023987,
     "evaluation_loss": 1.7157267332077026
+  },
+  {
+    "model": "axial_multiply_pointwise",
+    "run": 1,
+    "seed": 42,
+    "run_name": "axial_multiply_pointwise_run_01",
+    "best_val_accuracy": 0.6098999977111816,
+    "best_val_loss": 1.7647788524627686,
+    "final_val_accuracy": 0.607699990272522,
+    "final_val_loss": 1.7717394828796387,
+    "evaluation_accuracy": 0.607699990272522,
+    "evaluation_loss": 1.7717394828796387
   }
 ]
