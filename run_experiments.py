@@ -2,6 +2,7 @@ import argparse
 import csv
 import gc
 import json
+import subprocess
 from pathlib import Path
 
 import tensorflow as tf
@@ -161,6 +162,9 @@ def run_experiments(run_counts, model_names, base_seed, results_dir):
                     f"the global average {average_best_accuracy:.4f}."
                 )
                 break
+
+            if len(records) % 3 == 0:
+                subprocess.run(["clear"], check=False)
 
     return records
 

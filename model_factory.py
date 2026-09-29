@@ -105,6 +105,12 @@ class _AxialSpatialGate(layers.Layer):
         )
         self.vertical_norm = layers.LayerNormalization(axis=-1)
         self.horizontal_norm = layers.LayerNormalization(axis=-1)
+        self.gamma = self.add_weight(
+            name="gamma",
+            shape=(),
+            initializer=keras.initializers.Constant(0.1),
+            trainable=True,
+        )
         super().build(input_shape)
 
     def call(self, inputs):
@@ -120,7 +126,7 @@ class _AxialSpatialGate(layers.Layer):
             fused = vertical_features * horizontal_features
         else:
             fused = vertical_features + horizontal_features
-        gate = tf.nn.sigmoid(fused)
+        gate = 1.0 + self.gamma * tf.tanh(fused)
         return inputs * gate
 
 
@@ -143,28 +149,6 @@ class AxialSumTanh(_AxialSpatialGate):
     def __init__(self, **kwargs):
         super().__init__(fusion="sum", **kwargs)
 
-    def build(self, input_shape):
-        super().build(input_shape)
-        self.gamma = self.add_weight(
-            name="gamma",
-            shape=(),
-            initializer=keras.initializers.Constant(0.1),
-            trainable=True,
-        )
-
-    def call(self, inputs):
-        projected = inputs if self.pointwise is None else self.pointwise(inputs)
-        vertical_features = self.vertical(projected)
-        horizontal_features = self.horizontal(projected)
-        if self.use_post_pointwise:
-            vertical_features = self.vertical_post_pointwise(vertical_features)
-            horizontal_features = self.horizontal_post_pointwise(horizontal_features)
-        vertical_features = self.vertical_norm(vertical_features)
-        horizontal_features = self.horizontal_norm(horizontal_features)
-        fused = vertical_features + horizontal_features
-        gate = 1.0 + self.gamma * tf.tanh(fused)
-        return inputs * gate
-
 
 class AxialFused(_AxialSpatialGate):
     def __init__(self, **kwargs):
@@ -176,12 +160,6 @@ class AxialFused(_AxialSpatialGate):
             name="alpha",
             shape=(),
             initializer=keras.initializers.Constant(0.5),
-            trainable=True,
-        )
-        self.gamma = self.add_weight(
-            name="gamma",
-            shape=(),
-            initializer=keras.initializers.Constant(0.1),
             trainable=True,
         )
 
@@ -248,6 +226,15 @@ class AxialAvgPool2ConvGateSum(layers.Layer):
         self.vertical_norm = layers.LayerNormalization(axis=-1, epsilon=1e-5)
         self.horizontal_norm = layers.LayerNormalization(axis=-1, epsilon=1e-5)
 
+    def build(self, input_shape):
+        self.gamma = self.add_weight(
+            name="gamma",
+            shape=(),
+            initializer=keras.initializers.Constant(0.1),
+            trainable=True,
+        )
+        super().build(input_shape)
+
     def call(self, inputs):
         vertical_path = tf.reduce_mean(inputs, axis=2, keepdims=True)
         vertical_path = self.vertical_dw1(vertical_path)
@@ -262,7 +249,7 @@ class AxialAvgPool2ConvGateSum(layers.Layer):
         horizontal_path = self.horizontal_norm(horizontal_path)
 
         fused = vertical_path + horizontal_path
-        gate = tf.nn.sigmoid(fused)
+        gate = 1.0 + self.gamma * tf.tanh(fused)
         return inputs * gate
 
 
@@ -319,6 +306,12 @@ class AxialConvAttention(layers.Layer):
         
         self.key_norm = layers.LayerNormalization(axis=-1)
         self.query_norm = layers.LayerNormalization(axis=-1)
+        self.gamma = self.add_weight(
+            name="gamma",
+            shape=(),
+            initializer=keras.initializers.Constant(0.1),
+            trainable=True,
+        )
         super().build(input_shape)
 
     def call(self, inputs):
@@ -342,9 +335,9 @@ class AxialConvAttention(layers.Layer):
         )
         if self.gate_projection is not None:
             attention_logits = self.gate_projection(attention_logits)
-        attn = tf.nn.sigmoid(attention_logits)
+        gate = 1.0 + self.gamma * tf.tanh(attention_logits)
 
-        return inputs * attn
+        return inputs * gate
 
 
 
@@ -610,6 +603,12 @@ class AxialFullConvGate(layers.Layer):
         self.horizontal = layers.DepthwiseConv2D(
             (1, width), padding="valid", use_bias=False
         )
+        self.gamma = self.add_weight(
+            name="gamma",
+            shape=(),
+            initializer=keras.initializers.Constant(0.1),
+            trainable=True,
+        )
         super().build(input_shape)
 
     def call(self, inputs):
@@ -624,7 +623,7 @@ class AxialFullConvGate(layers.Layer):
         horizontal_path = self.horizontal_norm(horizontal_path)
 
         fused = vertical_path + horizontal_path
-        gate = tf.nn.sigmoid(fused)
+        gate = 1.0 + self.gamma * tf.tanh(fused)
         return inputs * gate
 
 
