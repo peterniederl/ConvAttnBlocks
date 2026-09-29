@@ -10,5 +10,17 @@
     "final_val_loss": 1.6679424047470093,
     "evaluation_accuracy": 0.6175000071525574,
     "evaluation_loss": 1.6679424047470093
+  },
+  {
+    "model": "axial_fused",
+    "run": 1,
+    "seed": 42,
+    "run_name": "axial_fused_run_01",
+    "best_val_accuracy": 0.609499990940094,
+    "best_val_loss": 1.7230054140090942,
+    "final_val_accuracy": 0.6090999841690063,
+    "final_val_loss": 1.7215337753295898,
+    "evaluation_accuracy": 0.6090999841690063,
+    "evaluation_loss": 1.7215337753295898
   }
 ]
