@@ -1,38 +1,14 @@
 [
   {
-    "model": "axial_sum_tanh",
-    "run": 1,
-    "seed": 42,
-    "run_name": "axial_sum_tanh_run_01",
-    "best_val_accuracy": 0.6175000071525574,
-    "best_val_loss": 1.6679424047470093,
-    "final_val_accuracy": 0.6175000071525574,
-    "final_val_loss": 1.6679424047470093,
-    "evaluation_accuracy": 0.6175000071525574,
-    "evaluation_loss": 1.6679424047470093
-  },
-  {
-    "model": "axial_fused",
-    "run": 1,
-    "seed": 42,
-    "run_name": "axial_fused_run_01",
-    "best_val_accuracy": 0.609499990940094,
-    "best_val_loss": 1.7230054140090942,
-    "final_val_accuracy": 0.6090999841690063,
-    "final_val_loss": 1.7215337753295898,
-    "evaluation_accuracy": 0.6090999841690063,
-    "evaluation_loss": 1.7215337753295898
-  },
-  {
     "model": "axial_sum_pointwise",
     "run": 1,
     "seed": 42,
     "run_name": "axial_sum_pointwise_run_01",
-    "best_val_accuracy": 0.6087999939918518,
-    "best_val_loss": 1.760716199874878,
-    "final_val_accuracy": 0.608299970626831,
-    "final_val_loss": 1.761851191520691,
-    "evaluation_accuracy": 0.608299970626831,
-    "evaluation_loss": 1.761851191520691
+    "best_val_accuracy": 0.6200000047683716,
+    "best_val_loss": 1.7385872602462769,
+    "final_val_accuracy": 0.6187000274658203,
+    "final_val_loss": 1.7408578395843506,
+    "evaluation_accuracy": 0.6187000274658203,
+    "evaluation_loss": 1.7408578395843506
   }
 ]
