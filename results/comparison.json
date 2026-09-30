@@ -34,5 +34,17 @@
     "final_val_loss": 1.7194194793701172,
     "evaluation_accuracy": 0.6155999898910522,
     "evaluation_loss": 1.7194194793701172
+  },
+  {
+    "model": "se_axial_sum",
+    "run": 1,
+    "seed": 42,
+    "run_name": "se_axial_sum_run_01",
+    "best_val_accuracy": 0.6176999807357788,
+    "best_val_loss": 1.723680019378662,
+    "final_val_accuracy": 0.6169999837875366,
+    "final_val_loss": 1.7241863012313843,
+    "evaluation_accuracy": 0.6169999837875366,
+    "evaluation_loss": 1.7241863012313843
   }
 ]
