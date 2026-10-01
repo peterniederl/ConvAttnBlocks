@@ -70,5 +70,17 @@
     "final_val_loss": 1.7337114810943604,
     "evaluation_accuracy": 0.6115999817848206,
     "evaluation_loss": 1.7337114810943604
+  },
+  {
+    "model": "multi_stage_spatial_mixer",
+    "run": 1,
+    "seed": 42,
+    "run_name": "multi_stage_spatial_mixer_run_01",
+    "best_val_accuracy": 0.6140999794006348,
+    "best_val_loss": 1.7101038694381714,
+    "final_val_accuracy": 0.6118000149726868,
+    "final_val_loss": 1.6961134672164917,
+    "evaluation_accuracy": 0.6118000149726868,
+    "evaluation_loss": 1.6961134672164917
   }
 ]
