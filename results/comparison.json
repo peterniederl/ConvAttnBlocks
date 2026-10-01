@@ -1,86 +1,14 @@
 [
   {
-    "model": "axial_sum_pointwise",
+    "model": "axial_sum_reduction2",
     "run": 1,
     "seed": 42,
-    "run_name": "axial_sum_pointwise_run_01",
-    "best_val_accuracy": 0.6200000047683716,
-    "best_val_loss": 1.7385872602462769,
-    "final_val_accuracy": 0.6187000274658203,
-    "final_val_loss": 1.7408578395843506,
-    "evaluation_accuracy": 0.6187000274658203,
-    "evaluation_loss": 1.7408578395843506
-  },
-  {
-    "model": "axial_sum_postpointwise",
-    "run": 1,
-    "seed": 42,
-    "run_name": "axial_sum_postpointwise_run_01",
-    "best_val_accuracy": 0.6122999787330627,
-    "best_val_loss": 1.7533873319625854,
-    "final_val_accuracy": 0.611299991607666,
-    "final_val_loss": 1.7546724081039429,
-    "evaluation_accuracy": 0.611299991607666,
-    "evaluation_loss": 1.7546724081039429
-  },
-  {
-    "model": "axial_sum_se",
-    "run": 1,
-    "seed": 42,
-    "run_name": "axial_sum_se_run_01",
-    "best_val_accuracy": 0.6155999898910522,
-    "best_val_loss": 1.7178128957748413,
-    "final_val_accuracy": 0.6155999898910522,
-    "final_val_loss": 1.7194194793701172,
-    "evaluation_accuracy": 0.6155999898910522,
-    "evaluation_loss": 1.7194194793701172
-  },
-  {
-    "model": "se_axial_sum",
-    "run": 1,
-    "seed": 42,
-    "run_name": "se_axial_sum_run_01",
-    "best_val_accuracy": 0.6176999807357788,
-    "best_val_loss": 1.723680019378662,
-    "final_val_accuracy": 0.6169999837875366,
-    "final_val_loss": 1.7241863012313843,
-    "evaluation_accuracy": 0.6169999837875366,
-    "evaluation_loss": 1.7241863012313843
-  },
-  {
-    "model": "axial_avg_pool_dual_norm",
-    "run": 1,
-    "seed": 42,
-    "run_name": "axial_avg_pool_dual_norm_run_01",
-    "best_val_accuracy": 0.6119999885559082,
-    "best_val_loss": 1.7545199394226074,
-    "final_val_accuracy": 0.6108999848365784,
-    "final_val_loss": 1.7571300268173218,
-    "evaluation_accuracy": 0.6108999848365784,
-    "evaluation_loss": 1.7571300268173218
-  },
-  {
-    "model": "axial_full_conv_gate",
-    "run": 1,
-    "seed": 42,
-    "run_name": "axial_full_conv_gate_run_01",
-    "best_val_accuracy": 0.6139000058174133,
-    "best_val_loss": 1.7314749956130981,
-    "final_val_accuracy": 0.6115999817848206,
-    "final_val_loss": 1.7337114810943604,
-    "evaluation_accuracy": 0.6115999817848206,
-    "evaluation_loss": 1.7337114810943604
-  },
-  {
-    "model": "multi_stage_spatial_mixer",
-    "run": 1,
-    "seed": 42,
-    "run_name": "multi_stage_spatial_mixer_run_01",
-    "best_val_accuracy": 0.6140999794006348,
-    "best_val_loss": 1.7101038694381714,
-    "final_val_accuracy": 0.6118000149726868,
-    "final_val_loss": 1.6961134672164917,
-    "evaluation_accuracy": 0.6118000149726868,
-    "evaluation_loss": 1.6961134672164917
+    "run_name": "axial_sum_reduction2_run_01",
+    "best_val_accuracy": 0.6082000136375427,
+    "best_val_loss": 1.7463937997817993,
+    "final_val_accuracy": 0.6065000295639038,
+    "final_val_loss": 1.7460640668869019,
+    "evaluation_accuracy": 0.6065000295639038,
+    "evaluation_loss": 1.7460640668869019
   }
 ]
