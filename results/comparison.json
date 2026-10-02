@@ -1,14 +1,14 @@
 [
   {
-    "model": "axial_sum_pointwise_grouped2",
-    "run": 1,
-    "seed": 42,
-    "run_name": "axial_sum_pointwise_grouped2_run_01",
-    "best_val_accuracy": 0.6183000206947327,
-    "best_val_loss": 1.694397211074829,
-    "final_val_accuracy": 0.6180999875068665,
-    "final_val_loss": 1.6901130676269531,
-    "evaluation_accuracy": 0.6180999875068665,
-    "evaluation_loss": 1.6901130676269531
+    "model": "baseline",
+    "run": 2,
+    "seed": 43,
+    "run_name": "baseline_run_02",
+    "best_val_accuracy": 0.6029999852180481,
+    "best_val_loss": 1.7531505823135376,
+    "final_val_accuracy": 0.6018999814987183,
+    "final_val_loss": 1.7498486042022705,
+    "evaluation_accuracy": 0.6018999814987183,
+    "evaluation_loss": 1.7498486042022705
   }
 ]
