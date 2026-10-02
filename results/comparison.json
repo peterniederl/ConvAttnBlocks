@@ -1,26 +1,14 @@
 [
   {
-    "model": "axial_sum_reduction2",
+    "model": "axial_sum_pointwise_grouped4",
     "run": 1,
     "seed": 42,
-    "run_name": "axial_sum_reduction2_run_01",
-    "best_val_accuracy": 0.6082000136375427,
-    "best_val_loss": 1.7463937997817993,
-    "final_val_accuracy": 0.6065000295639038,
-    "final_val_loss": 1.7460640668869019,
-    "evaluation_accuracy": 0.6065000295639038,
-    "evaluation_loss": 1.7460640668869019
-  },
-  {
-    "model": "axial_sum_reduction4",
-    "run": 1,
-    "seed": 42,
-    "run_name": "axial_sum_reduction4_run_01",
-    "best_val_accuracy": 0.6133999824523926,
-    "best_val_loss": 1.7208983898162842,
-    "final_val_accuracy": 0.6118999719619751,
-    "final_val_loss": 1.7226066589355469,
-    "evaluation_accuracy": 0.6118999719619751,
-    "evaluation_loss": 1.7226066589355469
+    "run_name": "axial_sum_pointwise_grouped4_run_01",
+    "best_val_accuracy": 0.6136999726295471,
+    "best_val_loss": 1.724715232849121,
+    "final_val_accuracy": 0.6126000285148621,
+    "final_val_loss": 1.7290382385253906,
+    "evaluation_accuracy": 0.6126000285148621,
+    "evaluation_loss": 1.7290382385253906
   }
 ]
