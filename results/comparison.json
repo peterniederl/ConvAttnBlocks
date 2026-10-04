@@ -1,62 +1,14 @@
 [
   {
     "model": "baseline",
-    "run": 2,
-    "seed": 43,
-    "run_name": "baseline_run_02",
-    "best_val_accuracy": 0.6029999852180481,
-    "best_val_loss": 1.7531505823135376,
-    "final_val_accuracy": 0.6018999814987183,
-    "final_val_loss": 1.7498486042022705,
-    "evaluation_accuracy": 0.6018999814987183,
-    "evaluation_loss": 1.7498486042022705
-  },
-  {
-    "model": "se",
-    "run": 2,
-    "seed": 43,
-    "run_name": "se_run_02",
-    "best_val_accuracy": 0.6104000210762024,
-    "best_val_loss": 1.7837415933609009,
-    "final_val_accuracy": 0.6100000143051147,
-    "final_val_loss": 1.7771244049072266,
-    "evaluation_accuracy": 0.6100000143051147,
-    "evaluation_loss": 1.7771244049072266
-  },
-  {
-    "model": "axial_sum_pointwise",
-    "run": 2,
-    "seed": 43,
-    "run_name": "axial_sum_pointwise_run_02",
-    "best_val_accuracy": 0.6054999828338623,
-    "best_val_loss": 1.7741320133209229,
-    "final_val_accuracy": 0.6047999858856201,
-    "final_val_loss": 1.772316575050354,
-    "evaluation_accuracy": 0.6047999858856201,
-    "evaluation_loss": 1.772316575050354
-  },
-  {
-    "model": "axial_sum_tanh",
-    "run": 2,
-    "seed": 43,
-    "run_name": "axial_sum_tanh_run_02",
-    "best_val_accuracy": 0.6071000099182129,
-    "best_val_loss": 1.709643006324768,
-    "final_val_accuracy": 0.6061999797821045,
-    "final_val_loss": 1.6972099542617798,
-    "evaluation_accuracy": 0.6061999797821045,
-    "evaluation_loss": 1.6972099542617798
-  },
-  {
-    "model": "axial_sum_pointwise_grouped2",
-    "run": 2,
-    "seed": 43,
-    "run_name": "axial_sum_pointwise_grouped2_run_02",
-    "best_val_accuracy": 0.6082000136375427,
-    "best_val_loss": 1.778531789779663,
-    "final_val_accuracy": 0.6060000061988831,
-    "final_val_loss": 1.766597867012024,
-    "evaluation_accuracy": 0.6060000061988831,
-    "evaluation_loss": 1.766597867012024
+    "run": 3,
+    "seed": 44,
+    "run_name": "baseline_run_03",
+    "best_val_accuracy": 0.609000027179718,
+    "best_val_loss": 1.7206342220306396,
+    "final_val_accuracy": 0.6078000068664551,
+    "final_val_loss": 1.7199969291687012,
+    "evaluation_accuracy": 0.6078000068664551,
+    "evaluation_loss": 1.7199969291687012
   }
 ]
