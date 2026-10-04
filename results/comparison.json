@@ -10,5 +10,17 @@
     "final_val_loss": 1.7199969291687012,
     "evaluation_accuracy": 0.6078000068664551,
     "evaluation_loss": 1.7199969291687012
+  },
+  {
+    "model": "se",
+    "run": 3,
+    "seed": 44,
+    "run_name": "se_run_03",
+    "best_val_accuracy": 0.6122000217437744,
+    "best_val_loss": 1.772312879562378,
+    "final_val_accuracy": 0.6105999946594238,
+    "final_val_loss": 1.770271897315979,
+    "evaluation_accuracy": 0.6105999946594238,
+    "evaluation_loss": 1.770271897315979
   }
 ]
