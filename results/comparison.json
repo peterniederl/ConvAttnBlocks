@@ -34,5 +34,17 @@
     "final_val_loss": 1.7818388938903809,
     "evaluation_accuracy": 0.6090999841690063,
     "evaluation_loss": 1.7818388938903809
+  },
+  {
+    "model": "axial_sum_tanh",
+    "run": 3,
+    "seed": 44,
+    "run_name": "axial_sum_tanh_run_03",
+    "best_val_accuracy": 0.6132000088691711,
+    "best_val_loss": 1.654839038848877,
+    "final_val_accuracy": 0.6104000210762024,
+    "final_val_loss": 1.654911756515503,
+    "evaluation_accuracy": 0.6104000210762024,
+    "evaluation_loss": 1.654911756515503
   }
 ]
