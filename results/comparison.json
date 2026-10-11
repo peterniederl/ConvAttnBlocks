@@ -1,50 +1,14 @@
 [
   {
     "model": "baseline",
-    "run": 3,
-    "seed": 44,
-    "run_name": "baseline_run_03",
-    "best_val_accuracy": 0.609000027179718,
-    "best_val_loss": 1.7206342220306396,
-    "final_val_accuracy": 0.6078000068664551,
-    "final_val_loss": 1.7199969291687012,
-    "evaluation_accuracy": 0.6078000068664551,
-    "evaluation_loss": 1.7199969291687012
-  },
-  {
-    "model": "se",
-    "run": 3,
-    "seed": 44,
-    "run_name": "se_run_03",
-    "best_val_accuracy": 0.6122000217437744,
-    "best_val_loss": 1.772312879562378,
-    "final_val_accuracy": 0.6105999946594238,
-    "final_val_loss": 1.770271897315979,
-    "evaluation_accuracy": 0.6105999946594238,
-    "evaluation_loss": 1.770271897315979
-  },
-  {
-    "model": "axial_sum_pointwise",
-    "run": 3,
-    "seed": 44,
-    "run_name": "axial_sum_pointwise_run_03",
-    "best_val_accuracy": 0.6111999750137329,
-    "best_val_loss": 1.7765002250671387,
-    "final_val_accuracy": 0.6090999841690063,
-    "final_val_loss": 1.7818388938903809,
-    "evaluation_accuracy": 0.6090999841690063,
-    "evaluation_loss": 1.7818388938903809
-  },
-  {
-    "model": "axial_sum_tanh",
-    "run": 3,
-    "seed": 44,
-    "run_name": "axial_sum_tanh_run_03",
-    "best_val_accuracy": 0.6132000088691711,
-    "best_val_loss": 1.654839038848877,
-    "final_val_accuracy": 0.6104000210762024,
-    "final_val_loss": 1.654911756515503,
-    "evaluation_accuracy": 0.6104000210762024,
-    "evaluation_loss": 1.654911756515503
+    "run": 1,
+    "seed": 42,
+    "run_name": "baseline_run_01",
+    "best_val_accuracy": 0.6342999935150146,
+    "best_val_loss": 1.6207857131958008,
+    "final_val_accuracy": 0.6326000094413757,
+    "final_val_loss": 1.6181963682174683,
+    "evaluation_accuracy": 0.6326000094413757,
+    "evaluation_loss": 1.6181963682174683
   }
 ]

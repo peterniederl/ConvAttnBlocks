@@ -22,18 +22,18 @@
   "mixup_alpha": 0.2,
   "mixup_probability": 0.5,
   "model": {
-    "dropout_rate": 0.3,
+    "dropout_rate": 0.4,
     "stage_channels": [
-      64,
-      128,
-      256
+      96,
+      192,
+      384
     ],
     "stage_depths": [
-      2,
       3,
-      4
+      3,
+      2
     ],
-    "stem_channels": 64
+    "stem_channels": 96
   },
   "num_classes": 200,
   "results_dir": "results",

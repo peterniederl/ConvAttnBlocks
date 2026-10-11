@@ -56,7 +56,7 @@
             1
           ],
           "dtype": "float32",
-          "filters": 64,
+          "filters": 96,
           "groups": 1,
           "kernel_constraint": null,
           "kernel_initializer": {
@@ -101,7 +101,7 @@
             null,
             32,
             32,
-            64
+            96
           ]
         },
         "class_name": "BatchNormalization",
@@ -165,7 +165,7 @@
             null,
             32,
             32,
-            64
+            96
           ]
         },
         "class_name": "Activation",
@@ -195,18 +195,18 @@
             null,
             32,
             32,
-            64
+            96
           ]
         },
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
           "dtype": "float32",
-          "filters": 64,
+          "filters": 96,
           "name": "residual_block",
           "stride": 1,
           "trainable": true,
-          "use_post_block": true
+          "use_post_block": false
         },
         "inbound_nodes": [
           [
@@ -228,18 +228,18 @@
             null,
             32,
             32,
-            64
+            96
           ]
         },
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
           "dtype": "float32",
-          "filters": 64,
+          "filters": 96,
           "name": "residual_block_1",
           "stride": 1,
           "trainable": true,
-          "use_post_block": false
+          "use_post_block": true
         },
         "inbound_nodes": [
           [
@@ -261,16 +261,16 @@
             null,
             32,
             32,
-            64
+            96
           ]
         },
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
           "dtype": "float32",
-          "filters": 128,
+          "filters": 96,
           "name": "residual_block_2",
-          "stride": 2,
+          "stride": 1,
           "trainable": true,
           "use_post_block": false
         },
@@ -292,20 +292,20 @@
         "build_config": {
           "input_shape": [
             null,
-            16,
-            16,
-            128
+            32,
+            32,
+            96
           ]
         },
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
           "dtype": "float32",
-          "filters": 128,
+          "filters": 192,
           "name": "residual_block_3",
-          "stride": 1,
+          "stride": 2,
           "trainable": true,
-          "use_post_block": true
+          "use_post_block": false
         },
         "inbound_nodes": [
           [
@@ -327,18 +327,18 @@
             null,
             16,
             16,
-            128
+            192
           ]
         },
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
           "dtype": "float32",
-          "filters": 128,
+          "filters": 192,
           "name": "residual_block_4",
           "stride": 1,
           "trainable": true,
-          "use_post_block": false
+          "use_post_block": true
         },
         "inbound_nodes": [
           [
@@ -360,16 +360,16 @@
             null,
             16,
             16,
-            128
+            192
           ]
         },
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
           "dtype": "float32",
-          "filters": 256,
+          "filters": 192,
           "name": "residual_block_5",
-          "stride": 2,
+          "stride": 1,
           "trainable": true,
           "use_post_block": false
         },
@@ -391,20 +391,20 @@
         "build_config": {
           "input_shape": [
             null,
-            8,
-            8,
-            256
+            16,
+            16,
+            192
           ]
         },
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
           "dtype": "float32",
-          "filters": 256,
+          "filters": 384,
           "name": "residual_block_6",
-          "stride": 1,
+          "stride": 2,
           "trainable": true,
-          "use_post_block": false
+          "use_post_block": true
         },
         "inbound_nodes": [
           [
@@ -426,18 +426,18 @@
             null,
             8,
             8,
-            256
+            384
           ]
         },
         "class_name": "ResidualBlock",
         "config": {
           "attention": "none",
           "dtype": "float32",
-          "filters": 256,
+          "filters": 384,
           "name": "residual_block_7",
           "stride": 1,
           "trainable": true,
-          "use_post_block": true
+          "use_post_block": false
         },
         "inbound_nodes": [
           [
@@ -459,40 +459,7 @@
             null,
             8,
             8,
-            256
-          ]
-        },
-        "class_name": "ResidualBlock",
-        "config": {
-          "attention": "none",
-          "dtype": "float32",
-          "filters": 256,
-          "name": "residual_block_8",
-          "stride": 1,
-          "trainable": true,
-          "use_post_block": false
-        },
-        "inbound_nodes": [
-          [
-            [
-              "residual_block_7",
-              0,
-              0,
-              {}
-            ]
-          ]
-        ],
-        "module": "model_factory",
-        "name": "residual_block_8",
-        "registered_name": "ResidualBlock"
-      },
-      {
-        "build_config": {
-          "input_shape": [
-            null,
-            8,
-            8,
-            256
+            384
           ]
         },
         "class_name": "GlobalAveragePooling2D",
@@ -506,7 +473,7 @@
         "inbound_nodes": [
           [
             [
-              "residual_block_8",
+              "residual_block_7",
               0,
               0,
               {}
@@ -521,7 +488,7 @@
         "build_config": {
           "input_shape": [
             null,
-            256
+            384
           ]
         },
         "class_name": "Dropout",
@@ -529,7 +496,7 @@
           "dtype": "float32",
           "name": "dropout",
           "noise_shape": null,
-          "rate": 0.3,
+          "rate": 0.4,
           "seed": null,
           "trainable": true
         },
@@ -551,7 +518,7 @@
         "build_config": {
           "input_shape": [
             null,
-            256
+            384
           ]
         },
         "class_name": "Dense",

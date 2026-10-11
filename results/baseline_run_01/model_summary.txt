@@ -4,49 +4,46 @@ _________________________________________________________________
 =================================================================
  input_1 (InputLayer)        [(None, 64, 64, 3)]       0         
                                                                  
- conv2d (Conv2D)             (None, 32, 32, 64)        4800      
+ conv2d (Conv2D)             (None, 32, 32, 96)        7200      
                                                                  
- batch_normalization (Batch  (None, 32, 32, 64)        256       
+ batch_normalization (Batch  (None, 32, 32, 96)        384       
  Normalization)                                                  
                                                                  
- activation (Activation)     (None, 32, 32, 64)        0         
+ activation (Activation)     (None, 32, 32, 96)        0         
                                                                  
- residual_block (ResidualBl  (None, 32, 32, 64)        74240     
+ residual_block (ResidualBl  (None, 32, 32, 96)        166656    
  ock)                                                            
                                                                  
- residual_block_1 (Residual  (None, 32, 32, 64)        74240     
+ residual_block_1 (Residual  (None, 32, 32, 96)        166656    
  Block)                                                          
                                                                  
- residual_block_2 (Residual  (None, 16, 16, 128)       230912    
+ residual_block_2 (Residual  (None, 32, 32, 96)        166656    
  Block)                                                          
                                                                  
- residual_block_3 (Residual  (None, 16, 16, 128)       295936    
+ residual_block_3 (Residual  (None, 16, 16, 192)       518400    
  Block)                                                          
                                                                  
- residual_block_4 (Residual  (None, 16, 16, 128)       295936    
+ residual_block_4 (Residual  (None, 16, 16, 192)       665088    
  Block)                                                          
                                                                  
- residual_block_5 (Residual  (None, 8, 8, 256)         920576    
+ residual_block_5 (Residual  (None, 16, 16, 192)       665088    
  Block)                                                          
                                                                  
- residual_block_6 (Residual  (None, 8, 8, 256)         1181696   
+ residual_block_6 (Residual  (None, 8, 8, 384)         2068992   
  Block)                                                          
                                                                  
- residual_block_7 (Residual  (None, 8, 8, 256)         1181696   
+ residual_block_7 (Residual  (None, 8, 8, 384)         2657280   
  Block)                                                          
                                                                  
- residual_block_8 (Residual  (None, 8, 8, 256)         1181696   
- Block)                                                          
-                                                                 
- global_average_pooling2d (  (None, 256)               0         
+ global_average_pooling2d (  (None, 384)               0         
  GlobalAveragePooling2D)                                         
                                                                  
- dropout (Dropout)           (None, 256)               0         
+ dropout (Dropout)           (None, 384)               0         
                                                                  
- dense (Dense)               (None, 200)               51400     
+ dense (Dense)               (None, 200)               77000     
                                                                  
 =================================================================
-Total params: 5493384 (20.96 MB)
-Trainable params: 5486344 (20.93 MB)
-Non-trainable params: 7040 (27.50 KB)
+Total params: 7159400 (27.31 MB)
+Trainable params: 7151528 (27.28 MB)
+Non-trainable params: 7872 (30.75 KB)
 _________________________________________________________________
