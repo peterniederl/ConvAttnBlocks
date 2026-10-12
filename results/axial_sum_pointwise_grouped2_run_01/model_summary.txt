@@ -1,0 +1,49 @@
+Model: "resnet_axial_sum_pointwise_grouped2"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_1 (InputLayer)        [(None, 64, 64, 3)]       0         
+                                                                 
+ conv2d (Conv2D)             (None, 32, 32, 96)        7200      
+                                                                 
+ batch_normalization (Batch  (None, 32, 32, 96)        384       
+ Normalization)                                                  
+                                                                 
+ activation (Activation)     (None, 32, 32, 96)        0         
+                                                                 
+ residual_block (ResidualBl  (None, 32, 32, 96)        177793    
+ ock)                                                            
+                                                                 
+ residual_block_1 (Residual  (None, 32, 32, 96)        177793    
+ Block)                                                          
+                                                                 
+ residual_block_2 (Residual  (None, 32, 32, 96)        177793    
+ Block)                                                          
+                                                                 
+ residual_block_3 (Residual  (None, 16, 16, 192)       543745    
+ Block)                                                          
+                                                                 
+ residual_block_4 (Residual  (None, 16, 16, 192)       690433    
+ Block)                                                          
+                                                                 
+ residual_block_5 (Residual  (None, 16, 16, 192)       690433    
+ Block)                                                          
+                                                                 
+ residual_block_6 (Residual  (None, 8, 8, 384)         2150401   
+ Block)                                                          
+                                                                 
+ residual_block_7 (Residual  (None, 8, 8, 384)         2738689   
+ Block)                                                          
+                                                                 
+ global_average_pooling2d (  (None, 384)               0         
+ GlobalAveragePooling2D)                                         
+                                                                 
+ dropout (Dropout)           (None, 384)               0         
+                                                                 
+ dense (Dense)               (None, 200)               77000     
+                                                                 
+=================================================================
+Total params: 7431664 (28.35 MB)
+Trainable params: 7423792 (28.32 MB)
+Non-trainable params: 7872 (30.75 KB)
+_________________________________________________________________
